@@ -21,7 +21,8 @@ public class Tacka extends Oblik implements Pomerljiv{
 	}	
 
 	public String toString(){
-		return "(" + x+ ","+ getY()+ ")";
+
+		return "Point: (" + x+ ","+ getY()+ "), "+getHexColor(getBoja())+", selected: "+isSelektovan();
 	}
 
 	public boolean equals(Object obj){

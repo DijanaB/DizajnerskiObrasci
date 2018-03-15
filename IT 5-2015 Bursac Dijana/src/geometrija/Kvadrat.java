@@ -48,7 +48,7 @@ public class Kvadrat extends PovrsinskiOblik implements Pomerljiv{
 	}
 
 	public String toString(){
-		return "Tacka gore levo=("+goreLevo.getX()+","+goreLevo.getY()+"),duzina stranice="+duzinaStranice;
+		return "Square: ("+goreLevo.getX()+","+goreLevo.getY()+"), "+duzinaStranice+", outline: "+getHexColor(getBoja())+", fill: "+ getHexColor(getBojaUnutrasnjosti())+", selected: "+isSelektovan();
 	}
 	
 	public String opis(){

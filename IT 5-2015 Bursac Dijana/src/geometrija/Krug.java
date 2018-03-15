@@ -26,7 +26,7 @@ public class Krug extends PovrsinskiOblik implements Pomerljiv{
 	}
 
 	public String toString(){
-		return "centar " + centar + ", poluprecnik=" + r;
+		return "Circle: (" + centar.getX() + ","+centar.getY()+"), radius: "+getR()+", outline: "+getHexColor(getBoja())+", fill: "+getHexColor(getBojaUnutrasnjosti())+" selected: "+isSelektovan();
 	}
 
 	public void pomeriNa(int x, int y) throws Exception{

@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import geometrija.HexagonAdapter;
 import geometrija.Krug;
 import geometrija.Kvadrat;
 import geometrija.Linija;
@@ -19,6 +20,9 @@ import mvc.DrawingView;
 
 import java.awt.FlowLayout;
 import net.miginfocom.swing.MigLayout;
+import observer.Button;
+import observer.Observer;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
@@ -46,10 +50,18 @@ import javax.swing.JTextField;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.GridLayout;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 
 public class Crtanje extends JFrame {
 
+
+
+	
 	private JPanel pnlGlavni;
 	private DrawingView podlogaZaCrtanje;
 	private DrawingModel model;
@@ -64,30 +76,6 @@ public class Crtanje extends JFrame {
 	JButton btnObrisi;
 	boolean potvrda;
 	private JPanel pnlModifikacija;
-	public JPanel getPnlModifikacija() {
-		return pnlModifikacija;
-	}
-
-
-
-	public void setPnlModifikacija(JPanel pnlModifikacija) {
-		this.pnlModifikacija = pnlModifikacija;
-	}
-
-
-
-	public JButton getBtnSelektuj() {
-		return btnSelektuj;
-	}
-
-
-
-	public void setBtnSelektuj(JButton btnSelektuj) {
-		this.btnSelektuj = btnSelektuj;
-	}
-
-
-
 	private JTextField txtX1;
 	private JTextField txtDuzina;
 	private JTextField txtY1;
@@ -117,9 +105,41 @@ public class Crtanje extends JFrame {
 	JButton btnPravougaonik;
 	JButton btnSelektuj;
 	private DrawingController controller;
+	private JPanel pnlFrontAndBack;
+	private JButton btnToFront;
+	private JButton btnToBack;
+	private JButton btnBringToFront;
+	private JButton btnBringToBack;
+	private JButton btnHexagon;
+	private JPanel pnlIspis;
+	private JTextArea textArea;
+	private JScrollPane scrollPane;
+	private Button btn = new Button();
 	/**
 	 * Launch the application.
 	 */
+	public JPanel getPnlModifikacija() {
+		return pnlModifikacija;
+	}
+
+
+
+	public void setPnlModifikacija(JPanel pnlModifikacija) {
+		this.pnlModifikacija = pnlModifikacija;
+	}
+
+
+
+	public JButton getBtnSelektuj() {
+		return btnSelektuj;
+	}
+
+
+
+	public void setBtnSelektuj(JButton btnSelektuj) {
+		this.btnSelektuj = btnSelektuj;
+	}
+
 	public void setController (DrawingController controller) {
 	 this.controller = controller;	
 	}
@@ -164,6 +184,18 @@ public class Crtanje extends JFrame {
 
 	public JButton getBtnTacka() {
 		return btnTacka;
+	}
+
+
+
+	public JButton getBtnHexagon() {
+		return btnHexagon;
+	}
+
+
+
+	public void setBtnHexagon(JButton btnHexagon) {
+		this.btnHexagon = btnHexagon;
 	}
 
 
@@ -368,6 +400,54 @@ public class Crtanje extends JFrame {
 
 
 
+	public JButton getBtnToFront() {
+		return btnToFront;
+	}
+
+
+
+	public void setBtnToFront(JButton btnToFront) {
+		this.btnToFront = btnToFront;
+	}
+
+
+
+	public JButton getBtnToBack() {
+		return btnToBack;
+	}
+
+
+
+	public void setBtnToBack(JButton btnToBack) {
+		this.btnToBack = btnToBack;
+	}
+
+
+
+	public JButton getBtnBringToFront() {
+		return btnBringToFront;
+	}
+
+
+
+	public void setBtnBringToFront(JButton btnBringToFront) {
+		this.btnBringToFront = btnBringToFront;
+	}
+
+
+
+	public JButton getBtnBringToBack() {
+		return btnBringToBack;
+	}
+
+
+
+	public void setBtnBringToBack(JButton btnBringToBack) {
+		this.btnBringToBack = btnBringToBack;
+	}
+
+
+
 	/**
 	 * Create the frame.
 	 */
@@ -378,7 +458,8 @@ public class Crtanje extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent m) {
 				//System.out.println("x " + m.getX() + "y " + m.getY() );
-				pnlModifikacija.setVisible(false);
+				pnlModifikacija.setVisible(true);
+				pnlModifikacijaK.setVisible(false);
 				btnObrisi.setEnabled(false);
 				btnModifikuj.setEnabled(false);
 				
@@ -555,7 +636,7 @@ public class Crtanje extends JFrame {
 		});
 		podlogaZaCrtanje.setBackground(Color.WHITE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 774, 563);
+		setBounds(100, 100, 774, 652);
 		pnlGlavni = new JPanel();
 		pnlGlavni.setBackground(Color.WHITE);
 		pnlGlavni.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -571,7 +652,7 @@ public class Crtanje extends JFrame {
 		JPanel pnlOblici = new JPanel();
 		pnlOblici.setBackground(Color.WHITE);
 		pnlKomponente.add(pnlOblici);
-		pnlOblici.setLayout(new MigLayout("", "[71px][5px]", "[14px][23px][23px][23px][][]"));
+		pnlOblici.setLayout(new MigLayout("", "[100px][100px][5px]", "[14px][23px][23px][23px]"));
 
 		JLabel lblOblici = new JLabel("Oblici:");
 		pnlOblici.add(lblOblici, "cell 0 0,alignx center,aligny top");
@@ -598,24 +679,71 @@ public class Crtanje extends JFrame {
 				obojajDugme(btnLinija);
 			}
 		});
+		
+				btnPravougaonik = new JButton("Pravougaonik");
+				btnPravougaonik.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						obojajDugme(btnPravougaonik);
+					}
+				});
+				pnlOblici.add(btnPravougaonik, "cell 1 1,grow");
 		pnlOblici.add(btnLinija, "cell 0 2,grow");
+		
+				btnKrug = new JButton("Krug");
+				btnKrug.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						obojajDugme(btnKrug);
+					}
+				});
+				pnlOblici.add(btnKrug, "cell 1 2,growx,aligny top");
 		pnlOblici.add(btnKvadrat, "cell 0 3,grow");
-
-		btnPravougaonik = new JButton("Pravougaonik");
-		btnPravougaonik.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				obojajDugme(btnPravougaonik);
+		
+		btnHexagon = new JButton("Hexagon");
+		btnHexagon.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				obojajDugme(btnHexagon);
 			}
 		});
-		pnlOblici.add(btnPravougaonik, "cell 0 4,grow");
-
-		btnKrug = new JButton("Krug");
-		btnKrug.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				obojajDugme(btnKrug);
+		pnlOblici.add(btnHexagon, "cell 1 3,growx");
+		
+		pnlFrontAndBack = new JPanel();
+		pnlFrontAndBack.setBackground(Color.WHITE);
+		pnlKomponente.add(pnlFrontAndBack);
+		pnlFrontAndBack.setLayout(new MigLayout("", "[]", "[][][]"));
+		
+		btnToFront = new JButton("To Front");
+		btnToFront.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				obojajDugme(btnToFront);
 			}
 		});
-		pnlOblici.add(btnKrug, "cell 0 5,growx,aligny top");
+		pnlFrontAndBack.add(btnToFront, "flowy,cell 0 0,grow");
+		
+		btnToBack = new JButton("To Back");
+		btnToBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				obojajDugme(btnToBack);
+			}
+		});
+		pnlFrontAndBack.add(btnToBack, "cell 0 0,growx");
+		
+		btnBringToFront = new JButton("Bring To Front");
+		btnBringToFront.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			
+				obojajDugme(btnBringToFront);
+			}
+		});
+		pnlFrontAndBack.add(btnBringToFront, "cell 0 1,growx");
+		
+		btnBringToBack = new JButton("Bring To Back");
+		btnBringToBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				obojajDugme(btnBringToBack);
+			}
+		});
+		pnlFrontAndBack.add(btnBringToBack, "cell 0 2,growx,aligny bottom");
 
 		JPanel pnlBoje = new JPanel();
 		pnlBoje.setBackground(Color.WHITE);
@@ -666,6 +794,7 @@ public class Crtanje extends JFrame {
 		pnlNaredbe.add(btnSelektuj, "cell 0 0,growx");
 
 		btnModifikuj = new JButton("Modifikuj");
+		
 		btnModifikuj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//obojajDugme(btnModifikuj);
@@ -674,7 +803,8 @@ public class Crtanje extends JFrame {
 				
 				controller.shapeModification();
 				
-				pnlModifikacija.setVisible(false);
+				pnlModifikacija.setVisible(true);
+				pnlModifikacijaK.setVisible(false);
 				
 				
 				/*
@@ -807,11 +937,12 @@ public class Crtanje extends JFrame {
 		pnlKomponente.add(btnBoja);
 
 		pnlModifikacija = new JPanel();
-		pnlModifikacija.setBackground(Color.WHITE);
+		pnlModifikacija.setBackground(Color.PINK);
 		pnlGlavni.add(pnlModifikacija, BorderLayout.SOUTH);
-		pnlModifikacija.setVisible(false);
+		pnlModifikacija.setVisible(true);
 
 		pnlModifikacijaK = new JPanel();
+		pnlModifikacijaK.setVisible(false);
 		pnlModifikacijaK.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent arg0) {
 				
@@ -823,8 +954,9 @@ public class Crtanje extends JFrame {
 				
 			}
 		});
+		pnlModifikacija.setLayout(new BorderLayout(0, 0));
 		pnlModifikacijaK.setBackground(Color.PINK);
-		pnlModifikacija.add(pnlModifikacijaK);
+		pnlModifikacija.add(pnlModifikacijaK, BorderLayout.NORTH);
 		pnlModifikacijaK.setLayout(new MigLayout("", "[][51.00,grow][][51.00,grow][20.00][51.00,grow][][51.00,grow][][51.00,grow]", "[][32.00][36.00]"));
 
 		lblNaziva1 = new JLabel("");
@@ -955,7 +1087,61 @@ public class Crtanje extends JFrame {
 		txtVisina.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		txtVisina.setColumns(10);
 		pnlModifikacijaK.add(txtVisina, "cell 7 2,growx");
+		
+		pnlIspis = new JPanel();
+		pnlIspis.setBackground(Color.PINK);
+		pnlIspis.setVisible(true);
+		pnlModifikacija.add(pnlIspis, BorderLayout.SOUTH);
+		
+		scrollPane = new JScrollPane();
+		
+		textArea = new JTextArea();
+		textArea.setBackground(Color.WHITE);
+		textArea.setFont(new Font("Arial", Font.PLAIN, 13));
+		scrollPane.setViewportView(textArea);
+		GroupLayout gl_pnlIspis = new GroupLayout(pnlIspis);
+		gl_pnlIspis.setHorizontalGroup(
+			gl_pnlIspis.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pnlIspis.createSequentialGroup()
+					.addGap(28)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
+					.addGap(28))
+		);
+		gl_pnlIspis.setVerticalGroup(
+			gl_pnlIspis.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pnlIspis.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		pnlIspis.setLayout(gl_pnlIspis);
+		
+	
 	}
+
+	public JPanel getPnlModifikacijaK() {
+		return pnlModifikacijaK;
+	}
+
+
+
+	public void setPnlModifikacijaK(JPanel pnlModifikacijaK) {
+		this.pnlModifikacijaK = pnlModifikacijaK;
+	}
+
+
+
+	public JTextArea getTextArea() {
+		return textArea;
+	}
+
+
+
+	public void setTextArea(JTextArea textArea) {
+		this.textArea = textArea;
+	}
+
+
 
 	public void obojajDugme(JButton d){
 		if(selektovanoDugme != null){
@@ -973,7 +1159,8 @@ public class Crtanje extends JFrame {
 				controller.unSelectShape();
 				selektovanoDugme.setBackground(btnBoja.getBackground());
 				selektovanoDugme = null;
-				pnlModifikacija.setVisible(false);
+				pnlModifikacija.setVisible(true);
+				pnlModifikacijaK.setVisible(false);
 				//selektovan=null;
 				//selekciju ispravljati
 				btnObrisi.setEnabled(false);
@@ -1180,6 +1367,38 @@ public class Crtanje extends JFrame {
 
 				btnBojaI.setBackground(((Krug)selektovan).getBoja());
 				btnBojaU.setBackground(((Krug)selektovan).getBojaUnutrasnjosti());
+				
+			}else if(selektovan instanceof HexagonAdapter){
+
+				txtX1.setEnabled(true);
+				txtY1.setEnabled(true);
+				lblX1.setEnabled(true);
+				lblY1.setEnabled(true);
+				txtX2.setEnabled(false);
+				txtY2.setEnabled(false);
+				lblX2.setEnabled(false);
+				lblY2.setEnabled(false);
+				lblBojaI.setEnabled(true);
+				btnBojaI.setEnabled(true);
+				lblBojaU.setEnabled(true);
+				btnBojaU.setEnabled(true);
+				lblR.setEnabled(true);
+				txtR.setEnabled(true);
+				lblDuzina.setEnabled(false);
+				txtDuzina.setEnabled(false);
+				lblVisina.setEnabled(false);
+				txtVisina.setEnabled(false);
+				lblNaziva1.setEnabled(true);
+				lblNaziva2.setEnabled(false);
+
+				lblNaziva1.setText("Koordinate centra:");
+
+				txtX1.setText(""+((HexagonAdapter)selektovan).getHexagon().getX());
+				txtY1.setText(""+((HexagonAdapter)selektovan).getHexagon().getY());
+				txtR.setText(""+((HexagonAdapter)selektovan).getHexagon().getR());
+
+				btnBojaI.setBackground(((HexagonAdapter)selektovan).getHexagon().getBorderColor());
+				btnBojaU.setBackground(((HexagonAdapter)selektovan).getHexagon().getAreaColor());
 				
 			}
 			

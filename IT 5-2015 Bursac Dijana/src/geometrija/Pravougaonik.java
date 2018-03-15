@@ -43,7 +43,7 @@ public class Pravougaonik extends Kvadrat{
 	}
 
 	public String toString(){
-		return "Gornji levi ugao="+goreLevo+",sirina="+sirina+",visina="+duzinaStranice;
+		return "Rectangle: ("+goreLevo.getX()+","+goreLevo.getY()+"), width: "+getSirina()+", height: "+duzinaStranice+", outline: "+getHexColor(getBoja())+", fill: "+ getHexColor(getBojaUnutrasnjosti())+", selected: "+isSelektovan();
 	}
 
 	public boolean equals(Object obj){

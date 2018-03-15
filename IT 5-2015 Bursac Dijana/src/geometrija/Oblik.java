@@ -18,6 +18,14 @@ public abstract class Oblik implements Comparable{
 	public abstract void crtajSe(Graphics g);
 	public abstract void selektovan(Graphics g);
 	public abstract boolean sadrzi(int x, int y);
+	
+	public String getHexColor(Color color) {
+		int red = color.getRed();
+		int green = color.getGreen();
+		int blue = color.getBlue();
+		String hex = String.format("#%02x%02x%02x", red,green,blue);
+		return hex;
+	}
 
 	public static Color pronadjiBoju(String boja){
 		if(boja.equalsIgnoreCase("crna"))
@@ -37,6 +45,8 @@ public abstract class Oblik implements Comparable{
 		else
 			return Color.BLACK;
 	}
+	
+	
 
 	public Color getBoja() {
 		return boja;

@@ -2,14 +2,17 @@ package mvc;
 
 import java.awt.Color;
 
+
 import javax.swing.JOptionPane;
 
+import geometrija.HexagonAdapter;
 import geometrija.Krug;
 import geometrija.Kvadrat;
 import geometrija.Linija;
 import geometrija.Oblik;
 import geometrija.Pravougaonik;
 import geometrija.Tacka;
+import hexagon.Hexagon;
 import wb.Crtanje;
 
 public class DrawingController {
@@ -82,6 +85,7 @@ public class DrawingController {
 			
 			Tacka t = new Tacka(x,y,outLine);
 			//t.crtajSe(podlogaZaCrtanje.getGraphics());
+			System.out.println(t.toString());
 			model.getStackShapes().push(t);
 			model.add(t);
 			
@@ -93,6 +97,7 @@ public class DrawingController {
 				Tacka t2 = new Tacka(x, y);		
 				Linija l = new Linija(t1,t2,frame.getBtnBojaIvice().getBackground());
 				//l.crtajSe(podlogaZaCrtanje.getGraphics());
+				System.out.println(l.toString());
 				model.getStackShapes().push(l);
 				model.add(l);
 				korak = 1;
@@ -116,8 +121,40 @@ public class DrawingController {
 					}else{
 						Kvadrat k = new Kvadrat(t, duzina,outLine,fillColor);
 						//k.crtajSe(podlogaZaCrtanje.getGraphics());
+						System.out.println(k.toString());
 						model.getStackShapes().push(k);
 						model.add(k);
+						potvrda = false;
+					}
+
+
+				} catch (NumberFormatException e) {
+					System.out.println("Greska! Unet string!");
+
+				}
+			}
+
+		}else if (frame.getSelektovanoDugme() == frame.getBtnHexagon()){
+			potvrda = true;
+			while(potvrda){
+				String inp = JOptionPane.showInputDialog(null,"Unesite duzinu poluprecnika:","Heksagon, unos duzine poluprecnika:", JOptionPane.QUESTION_MESSAGE);
+
+				try {
+					if(inp == null)
+						return;
+
+
+					int R = Integer.parseInt(inp);
+
+					if(R <= 0){
+						System.out.println("Greska broj mali!");
+					}else{						
+						HexagonAdapter h = new HexagonAdapter(x, y, R, frame.getBtnBojaIvice().getBackground(), frame.getBtnBojaUnutrasnjosti().getBackground());
+						//Kvadrat k = new Kvadrat(t, duzina,outLine,fillColor);
+						//k.crtajSe(podlogaZaCrtanje.getGraphics();
+						System.out.println(h.toString());
+						model.getStackShapes().push(h);
+						model.add(h);
 						potvrda = false;
 					}
 
@@ -146,6 +183,7 @@ public class DrawingController {
 						int visina = Integer.parseInt(inp2);
 						if(visina>0){
 							Pravougaonik p = new Pravougaonik(t,duzina,visina,frame.getBtnBojaIvice().getBackground(),frame.getBtnBojaUnutrasnjosti().getBackground());
+							System.out.println(p.toString());
 							//p.crtajSe(podlogaZaCrtanje.getGraphics());
 							model.getStackShapes().push(p);
 							model.add(p);
@@ -184,6 +222,11 @@ public class DrawingController {
 					if(r>0){
 						Krug kr=new Krug(t,r,frame.getBtnBojaIvice().getBackground(),frame.getBtnBojaUnutrasnjosti().getBackground());
 						//kr.crtajSe(podlogaZaCrtanje.getGraphics());
+						
+						frame.getTextArea().append(kr.toString()+"\n");
+						
+						
+						System.out.println(kr.toString());
 						model.getStackShapes().push(kr);
 						model.add(kr);
 						potvrda=false;
@@ -204,7 +247,8 @@ public class DrawingController {
 		}else if(frame.getSelektovanoDugme()==frame.getBtnSelektuj()){
 			
 			frame.omoguciDugmad(false);
-			frame.getPnlModifikacija().setVisible(false);
+			frame.getPnlModifikacija().setVisible(true);
+			frame.getPnlModifikacijaK().setVisible(false);
 			if(selektovan!= null){
 				selektovan.setSelektovan(false);
 				
@@ -224,16 +268,18 @@ public class DrawingController {
 					selektovan.setSelektovan(true);
 					frame.omoguciDugmad(true);
 					frame.setSelektovan(selektovan);
-					frame.omoguciModifikaciju(true);
+					
+					
+					frame.omoguciModifikaciju(true); //prikazuje se panel modifikacija
 					
 					//omoguciModifikaciju(true);
 						
 					
 					//pnlModifikacija.setVisible(true);
 					
-					frame.getPnlModifikacija().setVisible(true);
+					frame.getPnlModifikacijaK().setVisible(true);
 					
-				
+					
 				
 					return;
 				}
@@ -241,7 +287,25 @@ public class DrawingController {
 			}
 			
 			
-		}
+		}/*else if(frame.getSelektovanoDugme() == frame.getBtnToFront()) {
+			
+			for(int i=0;i<model.getStackShapes().size();i++) {
+				
+				if(model.getStackShapes().elementAt(i).isSelektovan()==true) {
+					
+					Oblik pomocni;
+					pomocni = model.getStackShapes().elementAt(i+1);
+					model.getStackShapes().elementAt(i+1) = model.getStackShapes().elementAt(i).isSelektovan();
+					
+					
+					
+					
+				}
+				
+			}
+			
+			
+			}*/
 		
 	}
 	
@@ -326,6 +390,24 @@ public class DrawingController {
 				((Krug)selektovan).setBoja(frame.getBtnBojaI().getBackground());
 				((Krug)selektovan).setBojaUnutrasnjosti(frame.getBtnBojaU().getBackground());
 				((Krug)selektovan).setSelektovan(false);
+				
+				
+
+			} catch (NumberFormatException e1) {
+
+			} catch (Exception e1) {
+
+			}
+		}else if(selektovan instanceof HexagonAdapter){
+			try {
+				((HexagonAdapter)selektovan).getHexagon().setX(Integer.parseInt(frame.getTxtX1().getText()));
+				((HexagonAdapter)selektovan).getHexagon().setY(Integer.parseInt(frame.getTxtY1().getText()));
+				((HexagonAdapter)selektovan).getHexagon().setR(Integer.parseInt(frame.getTxtR().getText()));
+
+
+				((HexagonAdapter)selektovan).getHexagon().setBorderColor(frame.getBtnBojaI().getBackground());
+				((HexagonAdapter)selektovan).getHexagon().setAreaColor(frame.getBtnBojaU().getBackground());
+				((HexagonAdapter)selektovan).setSelektovan(false);
 				
 				
 
