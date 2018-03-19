@@ -463,7 +463,13 @@ public class Crtanje extends JFrame {
 				btnObrisi.setEnabled(false);
 				btnModifikuj.setEnabled(false);
 				
-				controller.mouseClickedPnl(m.getX(),m.getY(),btnBojaIvice.getBackground(),btnBojaUnutrasnjosti.getBackground());
+				try {
+					controller.mouseClickedPnl(m.getX(),m.getY(),btnBojaIvice.getBackground(),btnBojaUnutrasnjosti.getBackground());
+				} catch (CloneNotSupportedException e) {
+					
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				/*
 			    for(int i=0;i<stekOblika.size();i++)
 			    {
@@ -631,7 +637,10 @@ public class Crtanje extends JFrame {
 					}
 					
 					
-				}*/
+				}*/ catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		podlogaZaCrtanje.setBackground(Color.WHITE);
@@ -1156,7 +1165,7 @@ public class Crtanje extends JFrame {
 			    		stekOblika.elementAt(i).setSelektovan(false);
 			    	}
 			    }*/
-				controller.unSelectShape();
+				//controller.unSelectShape();
 				selektovanoDugme.setBackground(btnBoja.getBackground());
 				selektovanoDugme = null;
 				pnlModifikacija.setVisible(true);

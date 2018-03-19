@@ -8,7 +8,7 @@ import geometrija.Oblik;
 public class DrawingModel {
 
 	private ArrayList <Oblik> shapes = new ArrayList <Oblik>(); 
-	private Stack <Oblik> stackShapes = new Stack <Oblik>();
+	private Stack <Oblik> stackShapesUndo = new Stack <Oblik>();
 	
 	public ArrayList<Oblik> getShapes(){
 		return shapes;
@@ -31,12 +31,12 @@ public class DrawingModel {
 		return shapes.get(i);
 	}
 
-	public Stack<Oblik> getStackShapes() {
-		return stackShapes;
+	public Stack<Oblik> getStackShapesUndo() {
+		return stackShapesUndo;
 	}
 
 	public void setStackShapes(Stack<Oblik> stackShapes) {
-		this.stackShapes = stackShapes;
+		this.stackShapesUndo = stackShapes;
 	}
 
 	public void setShapes(ArrayList<Oblik> shapes) {

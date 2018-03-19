@@ -3,7 +3,7 @@ package geometrija;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public abstract class Oblik implements Comparable{
+public abstract class Oblik implements Comparable, Cloneable{
 	private Color boja = Color.BLACK;
 	private String bojaStr = "crna";
 	private boolean selektovan;
@@ -18,6 +18,10 @@ public abstract class Oblik implements Comparable{
 	public abstract void crtajSe(Graphics g);
 	public abstract void selektovan(Graphics g);
 	public abstract boolean sadrzi(int x, int y);
+	
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
 	
 	public String getHexColor(Color color) {
 		int red = color.getRed();
