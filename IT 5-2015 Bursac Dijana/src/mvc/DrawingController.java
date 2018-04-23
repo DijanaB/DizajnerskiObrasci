@@ -304,6 +304,7 @@ public class DrawingController {
 			frame.omoguciDugmad(false);
 			frame.getPnlModifikacija().setVisible(true);
 			frame.getPnlModifikacijaK().setVisible(false);
+			setPnlModification();
 			
 			/*if(selektovan!= null){
 				selektovan.setSelektovan(false);
@@ -324,23 +325,13 @@ public class DrawingController {
 					selektovan = model.getShapes().get(i);
 					Oblik s = (Oblik) model.getShapes().get(i).clone();
 					selektovan.setSelektovan(true);
-					
+					frame.omoguciDugmad(true);
 					model.getStackShapesUndo().add(s);
 					cmdUpdateShape = new CmdUpdateShape(s, model.getStackShapesUndo().get(i));
 					cmdUpdateShape.execute();
-					frame.omoguciDugmad(true);
-					frame.setSelektovan(selektovan);
 					
-					
-					frame.omoguciModifikaciju(true); //prikazuje se panel modifikacija
-					
-					//omoguciModifikaciju(true);
-						
-					
-					//pnlModifikacija.setVisible(true);
-					
-					frame.getPnlModifikacijaK().setVisible(true);
 					m++;
+				
 					
 					if(m>1) {
 						
@@ -349,7 +340,7 @@ public class DrawingController {
 							if(!model.getShapes().get(j).equals(model.getStackShapesUndo().peek())) {
 								
 								model.getShapes().get(j).setSelektovan(false);
-								
+								setPnlModification();
 							}
 						}
 						
@@ -373,7 +364,8 @@ public class DrawingController {
 			if(m==0) {
 				
 				unSelectShape();
-			}
+				
+			} 
 			
 			
 			
@@ -548,5 +540,30 @@ public class DrawingController {
 
 			}
 		}
+	}
+	public void setPnlModification() {
+		
+		frame.getPnlModifikacijaK().setVisible(false);
+		
+		int a=0;
+		
+		for(int i = 0; i < model.getShapes().size();i++) {
+			
+			if(model.getShapes().get(i).isSelektovan())
+			{
+				a++;
+			}
+			
+		}
+		
+		if(a==1) {
+			
+			frame.getPnlModifikacijaK().setVisible(true);
+			
+		}else if(a>1) {
+			
+			frame.getPnlModifikacijaK().setVisible(false);
+		}
+		
 	}
 }
