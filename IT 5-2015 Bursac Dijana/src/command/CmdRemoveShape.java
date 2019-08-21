@@ -1,18 +1,18 @@
 package command;
 
-import geometrija.Oblik;
+import geometrija.Shape;
 import mvc.DrawingModel;
 
 public class CmdRemoveShape implements Command{
 
 	DrawingModel model = new DrawingModel();
-	Oblik o;
+	Shape o;
 	
 	public CmdRemoveShape() {
 	
 	}
 	
-	public CmdRemoveShape(Oblik o, DrawingModel model) {
+	public CmdRemoveShape(Shape o, DrawingModel model) {
 		
 		this.model=model;
 		this.o=o;

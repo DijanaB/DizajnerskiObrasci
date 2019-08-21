@@ -1,4 +1,4 @@
-package wb;
+package mvc;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -8,15 +8,12 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import geometrija.HexagonAdapter;
-import geometrija.Krug;
-import geometrija.Kvadrat;
-import geometrija.Linija;
-import geometrija.Oblik;
-import geometrija.Pravougaonik;
-import geometrija.Tacka;
-import mvc.DrawingController;
-import mvc.DrawingModel;
-import mvc.DrawingView;
+import geometrija.Circle;
+import geometrija.Square;
+import geometrija.Line;
+import geometrija.Shape;
+import geometrija.Rectangle;
+import geometrija.Point;
 
 import java.awt.FlowLayout;
 import net.miginfocom.swing.MigLayout;
@@ -57,53 +54,50 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
 
-public class Crtanje extends JFrame {
+public class Frame extends JFrame {
 
-
-
-	
-	private JPanel pnlGlavni;
-	private DrawingView podlogaZaCrtanje;
+	private JPanel pnlMain;
+	private DrawingView drawingSurface;
 	private DrawingModel model;
-	Stack<Oblik> stekOblika = new Stack<Oblik>();
-	JButton selektovanoDugme = null;
+	Stack<Shape> stackShapes = new Stack<Shape>();
+	JButton selectedButton = null;
 	//private int korak = 1;
 	//Tacka t1 = null;
-	JButton btnBojaUnutrasnjosti;
-	JButton btnBojaIvice;
-	Oblik selektovan; //imam ga u drawing controlleru treba izbrisati njegovo pojavljivanje odje
-	JButton btnModifikuj;
-	JButton btnObrisi;
-	boolean potvrda;
-	private JPanel pnlModifikacija;
+	JButton btnInsideColor;
+	JButton btnEdgeColor;
+	Shape selected; //imam ga u drawing controlleru treba izbrisati njegovo pojavljivanje odje
+	JButton btnModify;
+	JButton btnDelete;
+	boolean confirmation;
+	private JPanel pnlModify;
 	private JTextField txtX1;
-	private JTextField txtDuzina;
+	private JTextField txtLength;
 	private JTextField txtY1;
-	private JTextField txtVisina;
+	private JTextField txtHeight;
 	private JTextField txtR;
-	JButton btnBojaU;
-	JLabel lblBojaU;
-	JButton btnBojaI;
-	JLabel lblBojaI;
+	JButton btnColorIn;
+	JLabel lblColorIn;
+	JButton btnColorEd;
+	JLabel lblColorEd;
 	JLabel lblX1;
 	JLabel lblY1;
-	JLabel lblDuzina;
-	JLabel lblVisina;
+	JLabel lblLength;
+	JLabel lblHeight;
 	JLabel lblR;
-	JPanel pnlModifikacijaK;
+	JPanel pnlModifyK;
 	private JLabel lblX2;
 	private JLabel lblY2;
 	private JTextField txtX2;
 	private JTextField txtY2;
-	private JLabel lblNaziva1;
-	private JLabel lblNaziva2;
-	private JButton btnBoja;
-	JButton btnTacka;
-	JButton btnKrug;
-	JButton btnLinija;
-	JButton btnKvadrat;
-	JButton btnPravougaonik;
-	JButton btnSelektuj;
+	private JLabel lblName1;
+	private JLabel lblName2;
+	private JButton btnColor;
+	JButton btnPoint;
+	JButton btnCircle;
+	JButton btnLine;
+	JButton btnSquare;
+	JButton btnRectangle;
+	JButton btnSelect;
 	private DrawingController controller;
 	private JPanel pnlFrontAndBack;
 	private JButton btnToFront;
@@ -111,360 +105,34 @@ public class Crtanje extends JFrame {
 	private JButton btnBringToFront;
 	private JButton btnBringToBack;
 	private JButton btnHexagon;
-	private JPanel pnlIspis;
+	private JPanel pnlOutput;
 	private JTextArea textArea;
 	private JScrollPane scrollPane;
 	private Button btn = new Button();
 	/**
 	 * Launch the application.
 	 */
-	public JPanel getPnlModifikacija() {
-		return pnlModifikacija;
-	}
-
-
-
-	public void setPnlModifikacija(JPanel pnlModifikacija) {
-		this.pnlModifikacija = pnlModifikacija;
-	}
-
-
-
-	public JButton getBtnSelektuj() {
-		return btnSelektuj;
-	}
-
-
-
-	public void setBtnSelektuj(JButton btnSelektuj) {
-		this.btnSelektuj = btnSelektuj;
-	}
-
-	public void setController (DrawingController controller) {
-	 this.controller = controller;	
-	}
-	
-	
-	
-	public JButton getSelektovanoDugme() {
-		return selektovanoDugme;
-	}
-
-
-
-	public JButton getBtnBojaU() {
-		return btnBojaU;
-	}
-
-
-
-	public void setBtnBojaU(JButton btnBojaU) {
-		this.btnBojaU = btnBojaU;
-	}
-
-
-
-	public JButton getBtnBojaI() {
-		return btnBojaI;
-	}
-
-
-
-	public void setBtnBojaI(JButton btnBojaI) {
-		this.btnBojaI = btnBojaI;
-	}
-
-
-
-	public void setSelektovanoDugme(JButton selektovanoDugme) {
-		this.selektovanoDugme = selektovanoDugme;
-	}
-
-
-
-	public JButton getBtnTacka() {
-		return btnTacka;
-	}
-
-
-
-	public JButton getBtnHexagon() {
-		return btnHexagon;
-	}
-
-
-
-	public void setBtnHexagon(JButton btnHexagon) {
-		this.btnHexagon = btnHexagon;
-	}
-
-
-
-	public void setBtnTacka(JButton btnTacka) {
-		this.btnTacka = btnTacka;
-	}
-
-
-
-	public JTextField getTxtX1() {
-		return txtX1;
-	}
-
-
-
-	public void setTxtX1(JTextField txtX1) {
-		this.txtX1 = txtX1;
-	}
-
-
-
-	public JTextField getTxtDuzina() {
-		return txtDuzina;
-	}
-
-
-
-	public void setTxtDuzina(JTextField txtDuzina) {
-		this.txtDuzina = txtDuzina;
-	}
-
-
-
-	public JTextField getTxtY1() {
-		return txtY1;
-	}
-
-
-
-	public void setTxtY1(JTextField txtY1) {
-		this.txtY1 = txtY1;
-	}
-
-
-
-	public JTextField getTxtVisina() {
-		return txtVisina;
-	}
-
-
-
-	public void setTxtVisina(JTextField txtVisina) {
-		this.txtVisina = txtVisina;
-	}
-
-
-
-	public JTextField getTxtR() {
-		return txtR;
-	}
-
-
-
-	public void setTxtR(JTextField txtR) {
-		this.txtR = txtR;
-	}
-
-
-
-	public JTextField getTxtX2() {
-		return txtX2;
-	}
-
-
-
-	public void setTxtX2(JTextField txtX2) {
-		this.txtX2 = txtX2;
-	}
-
-
-
-	public JTextField getTxtY2() {
-		return txtY2;
-	}
-
-
-
-	public void setTxtY2(JTextField txtY2) {
-		this.txtY2 = txtY2;
-	}
-
-
-
-	public JButton getBtnKrug() {
-		return btnKrug;
-	}
-
-
-
-	public void setBtnKrug(JButton btnKrug) {
-		this.btnKrug = btnKrug;
-	}
-
-
-
-	public JButton getBtnLinija() {
-		return btnLinija;
-	}
-
-
-
-	public void setBtnLinija(JButton btnLinija) {
-		this.btnLinija = btnLinija;
-	}
-
-
-
-	public JButton getBtnModifikuj() {
-		return btnModifikuj;
-	}
-
-
-
-	public void setBtnModifikuj(JButton btnModifikuj) {
-		this.btnModifikuj = btnModifikuj;
-	}
-
-
-
-	public JButton getBtnObrisi() {
-		return btnObrisi;
-	}
-
-
-
-	public void setBtnObrisi(JButton btnObrisi) {
-		this.btnObrisi = btnObrisi;
-	}
-
-
-
-	public JButton getBtnKvadrat() {
-		return btnKvadrat;
-	}
-
-
-
-	public void setBtnKvadrat(JButton btnKvadrat) {
-		this.btnKvadrat = btnKvadrat;
-	}
-
-
-
-	public JButton getBtnPravougaonik() {
-		return btnPravougaonik;
-	}
-
-
-
-	public void setBtnPravougaonik(JButton btnPravougaonik) {
-		this.btnPravougaonik = btnPravougaonik;
-	}
-
-
-
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Crtanje frame = new Crtanje();
-					frame.setVisible(true);
-					frame.setTitle("Paint, IT5-2015 Bursac Dijana");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
-
-	public JButton getBtnBojaUnutrasnjosti() {
-		return btnBojaUnutrasnjosti;
-	}
-
-
-
-	public void setBtnBojaUnutrasnjosti(JButton btnBojaUnutrasnjosti) {
-		this.btnBojaUnutrasnjosti = btnBojaUnutrasnjosti;
-	}
-
-
-
-	public JButton getBtnBojaIvice() {
-		return btnBojaIvice;
-	}
-
-
-
-	public void setBtnBojaIvice(JButton btnBojaIvice) {
-		this.btnBojaIvice = btnBojaIvice;
-	}
-
-
-
-	public JButton getBtnToFront() {
-		return btnToFront;
-	}
-
-
-
-	public void setBtnToFront(JButton btnToFront) {
-		this.btnToFront = btnToFront;
-	}
-
-
-
-	public JButton getBtnToBack() {
-		return btnToBack;
-	}
-
-
-
-	public void setBtnToBack(JButton btnToBack) {
-		this.btnToBack = btnToBack;
-	}
-
-
-
-	public JButton getBtnBringToFront() {
-		return btnBringToFront;
-	}
-
-
-
-	public void setBtnBringToFront(JButton btnBringToFront) {
-		this.btnBringToFront = btnBringToFront;
-	}
-
-
-
-	public JButton getBtnBringToBack() {
-		return btnBringToBack;
-	}
-
-
-
-	public void setBtnBringToBack(JButton btnBringToBack) {
-		this.btnBringToBack = btnBringToBack;
-	}
-
 
 
 	/**
 	 * Create the frame.
 	 */
-	public Crtanje() {
-		podlogaZaCrtanje= new DrawingView();
+	public Frame() {
+		
+		
+		drawingSurface= new DrawingView();
 		model = new DrawingModel();
-		podlogaZaCrtanje.addMouseListener(new MouseAdapter() {
+		drawingSurface.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent m) {
 				//System.out.println("x " + m.getX() + "y " + m.getY() );
-				pnlModifikacija.setVisible(true);
-				pnlModifikacijaK.setVisible(false);
-				btnObrisi.setEnabled(false);
-				btnModifikuj.setEnabled(false);
+				pnlModify.setVisible(true);
+				pnlModifyK.setVisible(false);
+				btnDelete.setEnabled(false);
+				btnModify.setEnabled(false);
 				
 				try {
-					controller.mouseClickedPnl(m.getX(),m.getY(),btnBojaIvice.getBackground(),btnBojaUnutrasnjosti.getBackground());
+					controller.mouseClickedPnl(m.getX(),m.getY(),btnEdgeColor.getBackground(),btnInsideColor.getBackground());
 				} catch (CloneNotSupportedException e) {
 					
 					// TODO Auto-generated catch block
@@ -643,19 +311,19 @@ public class Crtanje extends JFrame {
 				}
 			}
 		});
-		podlogaZaCrtanje.setBackground(Color.WHITE);
+		drawingSurface.setBackground(Color.WHITE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 774, 652);
-		pnlGlavni = new JPanel();
-		pnlGlavni.setBackground(Color.WHITE);
-		pnlGlavni.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(pnlGlavni);
-		pnlGlavni.setLayout(new BorderLayout(0, 0));
-		pnlGlavni.add(podlogaZaCrtanje, BorderLayout.CENTER);
+		pnlMain = new JPanel();
+		pnlMain.setBackground(Color.WHITE);
+		pnlMain.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(pnlMain);
+		pnlMain.setLayout(new BorderLayout(0, 0));
+		pnlMain.add(drawingSurface, BorderLayout.CENTER);
 
 		JPanel pnlKomponente = new JPanel();
 		pnlKomponente.setBackground(Color.PINK);
-		pnlGlavni.add(pnlKomponente, BorderLayout.NORTH);
+		pnlMain.add(pnlKomponente, BorderLayout.NORTH);
 		pnlKomponente.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		JPanel pnlOblici = new JPanel();
@@ -666,46 +334,46 @@ public class Crtanje extends JFrame {
 		JLabel lblOblici = new JLabel("Oblici:");
 		pnlOblici.add(lblOblici, "cell 0 0,alignx center,aligny top");
 
-		btnTacka = new JButton("Tacka");
+		btnPoint = new JButton("Tacka");
 
-		btnTacka.addActionListener(new ActionListener() {
+		btnPoint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				obojajDugme(btnTacka);
+				obojajDugme(btnPoint);
 			}
 		});
-		pnlOblici.add(btnTacka, "cell 0 1,grow");
+		pnlOblici.add(btnPoint, "cell 0 1,grow");
 
-		btnKvadrat = new JButton("Kvadrat");
-		btnKvadrat.addActionListener(new ActionListener() {
+		btnSquare = new JButton("Kvadrat");
+		btnSquare.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				obojajDugme(btnKvadrat);
+				obojajDugme(btnSquare);
 			}
 		});
 
-		btnLinija = new JButton("Linija");
-		btnLinija.addActionListener(new ActionListener() {
+		btnLine = new JButton("Linija");
+		btnLine.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				obojajDugme(btnLinija);
+				obojajDugme(btnLine);
 			}
 		});
 		
-				btnPravougaonik = new JButton("Pravougaonik");
-				btnPravougaonik.addActionListener(new ActionListener() {
+				btnRectangle = new JButton("Pravougaonik");
+				btnRectangle.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						obojajDugme(btnPravougaonik);
+						obojajDugme(btnRectangle);
 					}
 				});
-				pnlOblici.add(btnPravougaonik, "cell 1 1,grow");
-		pnlOblici.add(btnLinija, "cell 0 2,grow");
+				pnlOblici.add(btnRectangle, "cell 1 1,grow");
+		pnlOblici.add(btnLine, "cell 0 2,grow");
 		
-				btnKrug = new JButton("Krug");
-				btnKrug.addActionListener(new ActionListener() {
+				btnCircle = new JButton("Krug");
+				btnCircle.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						obojajDugme(btnKrug);
+						obojajDugme(btnCircle);
 					}
 				});
-				pnlOblici.add(btnKrug, "cell 1 2,growx,aligny top");
-		pnlOblici.add(btnKvadrat, "cell 0 3,grow");
+				pnlOblici.add(btnCircle, "cell 1 2,growx,aligny top");
+		pnlOblici.add(btnSquare, "cell 0 3,grow");
 		
 		btnHexagon = new JButton("Hexagon");
 		btnHexagon.addActionListener(new ActionListener() {
@@ -759,27 +427,27 @@ public class Crtanje extends JFrame {
 		pnlKomponente.add(pnlBoje);
 		pnlBoje.setLayout(new MigLayout("", "[95.00][95.00]", "[45.00][]"));
 
-		btnBojaIvice = new JButton("");
-		btnBojaIvice.setBackground(Color.BLACK);
-		btnBojaIvice.addActionListener(new ActionListener() {
+		btnEdgeColor = new JButton("");
+		btnEdgeColor.setBackground(Color.BLACK);
+		btnEdgeColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JColorChooser jcc = new JColorChooser();
 				Color c = jcc.showDialog(null, "Izaberite boju", Color.BLACK);
-				btnBojaIvice.setBackground(c);
+				btnEdgeColor.setBackground(c);
 			}
 		});
-		pnlBoje.add(btnBojaIvice, "cell 0 0,grow");
+		pnlBoje.add(btnEdgeColor, "cell 0 0,grow");
 
-		btnBojaUnutrasnjosti = new JButton("");
-		btnBojaUnutrasnjosti.addActionListener(new ActionListener() {
+		btnInsideColor = new JButton("");
+		btnInsideColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JColorChooser jcc = new JColorChooser();
 				Color c = jcc.showDialog(null, "Izaberite boju", Color.BLACK);
-				btnBojaUnutrasnjosti.setBackground(c);
+				btnInsideColor.setBackground(c);
 			}
 		});
-		btnBojaUnutrasnjosti.setBackground(Color.WHITE);
-		pnlBoje.add(btnBojaUnutrasnjosti, "cell 1 0,grow");
+		btnInsideColor.setBackground(Color.WHITE);
+		pnlBoje.add(btnInsideColor, "cell 1 0,grow");
 
 		JLabel lblBojaIvice = new JLabel("Boja ivice");
 		pnlBoje.add(lblBojaIvice, "cell 0 1,alignx center");
@@ -792,28 +460,28 @@ public class Crtanje extends JFrame {
 		pnlKomponente.add(pnlNaredbe);
 		pnlNaredbe.setLayout(new MigLayout("", "[]", "[][][]"));
 
-		btnSelektuj = new JButton("Selektuj");
-		btnSelektuj.addActionListener(new ActionListener() {
+		btnSelect = new JButton("Selektuj");
+		btnSelect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				obojajDugme(btnSelektuj);
+				obojajDugme(btnSelect);
 
 
 			}
 		});
-		pnlNaredbe.add(btnSelektuj, "cell 0 0,growx");
+		pnlNaredbe.add(btnSelect, "cell 0 0,growx");
 
-		btnModifikuj = new JButton("Modifikuj");
+		btnModify = new JButton("Modifikuj");
 		
-		btnModifikuj.addActionListener(new ActionListener() {
+		btnModify.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//obojajDugme(btnModifikuj);
 				
-				btnObrisi.setEnabled(false);
+				btnDelete.setEnabled(false);
 				
 				controller.shapeModification();
 				
-				pnlModifikacija.setVisible(true);
-				pnlModifikacijaK.setVisible(false);
+				pnlModify.setVisible(true);
+				pnlModifyK.setVisible(false);
 				
 				
 				/*
@@ -908,11 +576,11 @@ public class Crtanje extends JFrame {
 			
 			}
 		});
-		btnModifikuj.setEnabled(false);
-		pnlNaredbe.add(btnModifikuj, "cell 0 1");
+		btnModify.setEnabled(false);
+		pnlNaredbe.add(btnModify, "cell 0 1");
 
-		btnObrisi = new JButton("Obrisi");
-		btnObrisi.addActionListener(new ActionListener() {
+		btnDelete = new JButton("Obrisi");
+		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				controller.deleteShape();
@@ -938,50 +606,50 @@ public class Crtanje extends JFrame {
 				
 			}
 		});
-		btnObrisi.setEnabled(false);
-		pnlNaredbe.add(btnObrisi, "cell 0 2,growx");
+		btnDelete.setEnabled(false);
+		pnlNaredbe.add(btnDelete, "cell 0 2,growx");
 		
-		btnBoja = new JButton("");
-		btnBoja.setVisible(false);
-		pnlKomponente.add(btnBoja);
+		btnColor = new JButton("");
+		btnColor.setVisible(false);
+		pnlKomponente.add(btnColor);
 
-		pnlModifikacija = new JPanel();
-		pnlModifikacija.setBackground(Color.PINK);
-		pnlGlavni.add(pnlModifikacija, BorderLayout.SOUTH);
-		pnlModifikacija.setVisible(true);
+		pnlModify = new JPanel();
+		pnlModify.setBackground(Color.PINK);
+		pnlMain.add(pnlModify, BorderLayout.SOUTH);
+		pnlModify.setVisible(true);
 
-		pnlModifikacijaK = new JPanel();
-		pnlModifikacijaK.setVisible(false);
-		pnlModifikacijaK.addPropertyChangeListener(new PropertyChangeListener() {
+		pnlModifyK = new JPanel();
+		pnlModifyK.setVisible(false);
+		pnlModifyK.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent arg0) {
 				
 			}
 		});
-		pnlModifikacijaK.addComponentListener(new ComponentAdapter() {
+		pnlModifyK.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent arg0) {
 				
 			}
 		});
-		pnlModifikacija.setLayout(new BorderLayout(0, 0));
-		pnlModifikacijaK.setBackground(Color.PINK);
-		pnlModifikacija.add(pnlModifikacijaK, BorderLayout.NORTH);
-		pnlModifikacijaK.setLayout(new MigLayout("", "[][51.00,grow][][51.00,grow][20.00][51.00,grow][][51.00,grow][][51.00,grow]", "[][32.00][36.00]"));
+		pnlModify.setLayout(new BorderLayout(0, 0));
+		pnlModifyK.setBackground(Color.PINK);
+		pnlModify.add(pnlModifyK, BorderLayout.NORTH);
+		pnlModifyK.setLayout(new MigLayout("", "[][51.00,grow][][51.00,grow][20.00][51.00,grow][][51.00,grow][][51.00,grow]", "[][32.00][36.00]"));
 
-		lblNaziva1 = new JLabel("");
-		lblNaziva1.setEnabled(false);
-		lblNaziva1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		pnlModifikacijaK.add(lblNaziva1, "cell 1 0");
+		lblName1 = new JLabel("");
+		lblName1.setEnabled(false);
+		lblName1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		pnlModifyK.add(lblName1, "cell 1 0");
 
-		lblNaziva2 = new JLabel("");
-		lblNaziva2.setEnabled(false);
-		lblNaziva2.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		pnlModifikacijaK.add(lblNaziva2, "cell 3 0");
+		lblName2 = new JLabel("");
+		lblName2.setEnabled(false);
+		lblName2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		pnlModifyK.add(lblName2, "cell 3 0");
 
 		lblX1 = new JLabel("X:");
 		lblX1.setEnabled(false);
 		lblX1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		pnlModifikacijaK.add(lblX1, "cell 0 1,alignx trailing");
+		pnlModifyK.add(lblX1, "cell 0 1,alignx trailing");
 
 		txtX1 = new JTextField();
 		
@@ -993,114 +661,114 @@ public class Crtanje extends JFrame {
 		});
 		txtX1.setEnabled(false);
 		txtX1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		pnlModifikacijaK.add(txtX1, "cell 1 1,growx,aligny center");
+		pnlModifyK.add(txtX1, "cell 1 1,growx,aligny center");
 		txtX1.setColumns(10);
 
 		lblX2 = new JLabel("X:");
 		lblX2.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblX2.setEnabled(false);
-		pnlModifikacijaK.add(lblX2, "cell 2 1,alignx trailing");
+		pnlModifyK.add(lblX2, "cell 2 1,alignx trailing");
 
 		txtX2 = new JTextField();
 		txtX2.setText("");
 		txtX2.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		txtX2.setEnabled(false);
 		txtX2.setColumns(10);
-		pnlModifikacijaK.add(txtX2, "cell 3 1,growx");
+		pnlModifyK.add(txtX2, "cell 3 1,growx");
 
-		lblBojaI = new JLabel("Boja Ivice:");
-		lblBojaI.setEnabled(false);
-		lblBojaI.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		pnlModifikacijaK.add(lblBojaI, "cell 4 1,alignx right");
+		lblColorEd = new JLabel("Boja Ivice:");
+		lblColorEd.setEnabled(false);
+		lblColorEd.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		pnlModifyK.add(lblColorEd, "cell 4 1,alignx right");
 
-		btnBojaI = new JButton("");
-		btnBojaI.setEnabled(false);
-		btnBojaI.addActionListener(new ActionListener() {
+		btnColorEd = new JButton("");
+		btnColorEd.setEnabled(false);
+		btnColorEd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JColorChooser jcc2 = new JColorChooser();
 				Color c = jcc2.showDialog(null, "Izaberite boju", Color.BLACK);
-				btnBojaI.setBackground(c);
+				btnColorEd.setBackground(c);
 			}
 		});
-		pnlModifikacijaK.add(btnBojaI, "cell 5 1,grow");
+		pnlModifyK.add(btnColorEd, "cell 5 1,grow");
 
-		lblDuzina = new JLabel("Duzina:");
-		lblDuzina.setEnabled(false);
-		lblDuzina.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		pnlModifikacijaK.add(lblDuzina, "cell 6 1,alignx trailing");
+		lblLength = new JLabel("Duzina:");
+		lblLength.setEnabled(false);
+		lblLength.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		pnlModifyK.add(lblLength, "cell 6 1,alignx trailing");
 
-		txtDuzina = new JTextField();
-		txtDuzina.setEnabled(false);
-		txtDuzina.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		txtDuzina.setColumns(10);
-		pnlModifikacijaK.add(txtDuzina, "cell 7 1,growx");
+		txtLength = new JTextField();
+		txtLength.setEnabled(false);
+		txtLength.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		txtLength.setColumns(10);
+		pnlModifyK.add(txtLength, "cell 7 1,growx");
 
 		lblR = new JLabel("r:");
 		lblR.setEnabled(false);
 		lblR.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		pnlModifikacijaK.add(lblR, "cell 8 1,alignx trailing");
+		pnlModifyK.add(lblR, "cell 8 1,alignx trailing");
 
 		txtR = new JTextField();
 		txtR.setEnabled(false);
 		txtR.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		txtR.setColumns(10);
-		pnlModifikacijaK.add(txtR, "cell 9 1,growx");
+		pnlModifyK.add(txtR, "cell 9 1,growx");
 
 		lblY1 = new JLabel("Y:");
 		lblY1.setEnabled(false);
 		lblY1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		pnlModifikacijaK.add(lblY1, "cell 0 2,alignx trailing");
+		pnlModifyK.add(lblY1, "cell 0 2,alignx trailing");
 
 		txtY1 = new JTextField();
 		txtY1.setText("");
 		txtY1.setEnabled(false);
 		txtY1.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		txtY1.setColumns(10);
-		pnlModifikacijaK.add(txtY1, "cell 1 2,growx,aligny center");
+		pnlModifyK.add(txtY1, "cell 1 2,growx,aligny center");
 
 		lblY2 = new JLabel("Y:");
 		lblY2.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblY2.setEnabled(false);
-		pnlModifikacijaK.add(lblY2, "cell 2 2,alignx trailing");
+		pnlModifyK.add(lblY2, "cell 2 2,alignx trailing");
 
 		txtY2 = new JTextField();
 		txtY2.setText("");
 		txtY2.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		txtY2.setEnabled(false);
 		txtY2.setColumns(10);
-		pnlModifikacijaK.add(txtY2, "cell 3 2,growx");
+		pnlModifyK.add(txtY2, "cell 3 2,growx");
 
-		lblBojaU = new JLabel("Boja unutrsanjosti:");
-		lblBojaU.setEnabled(false);
-		lblBojaU.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		pnlModifikacijaK.add(lblBojaU, "cell 4 2");
+		lblColorIn = new JLabel("Boja unutrsanjosti:");
+		lblColorIn.setEnabled(false);
+		lblColorIn.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		pnlModifyK.add(lblColorIn, "cell 4 2");
 
-		btnBojaU = new JButton("");
-		btnBojaU.setEnabled(false);
-		btnBojaU.addActionListener(new ActionListener() {
+		btnColorIn = new JButton("");
+		btnColorIn.setEnabled(false);
+		btnColorIn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JColorChooser jcc = new JColorChooser();
 				Color c = jcc.showDialog(null, "Izaberite boju", Color.BLACK);
-				btnBojaU.setBackground(c);
+				btnColorIn.setBackground(c);
 			}
 		});
-		pnlModifikacijaK.add(btnBojaU, "cell 5 2,grow");
+		pnlModifyK.add(btnColorIn, "cell 5 2,grow");
 
-		lblVisina = new JLabel("Visina:");
-		lblVisina.setEnabled(false);
-		lblVisina.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		pnlModifikacijaK.add(lblVisina, "cell 6 2,alignx trailing");
+		lblHeight = new JLabel("Visina:");
+		lblHeight.setEnabled(false);
+		lblHeight.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		pnlModifyK.add(lblHeight, "cell 6 2,alignx trailing");
 
-		txtVisina = new JTextField();
-		txtVisina.setEnabled(false);
-		txtVisina.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		txtVisina.setColumns(10);
-		pnlModifikacijaK.add(txtVisina, "cell 7 2,growx");
+		txtHeight = new JTextField();
+		txtHeight.setEnabled(false);
+		txtHeight.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		txtHeight.setColumns(10);
+		pnlModifyK.add(txtHeight, "cell 7 2,growx");
 		
-		pnlIspis = new JPanel();
-		pnlIspis.setBackground(Color.PINK);
-		pnlIspis.setVisible(true);
-		pnlModifikacija.add(pnlIspis, BorderLayout.SOUTH);
+		pnlOutput = new JPanel();
+		pnlOutput.setBackground(Color.PINK);
+		pnlOutput.setVisible(true);
+		pnlModify.add(pnlOutput, BorderLayout.SOUTH);
 		
 		scrollPane = new JScrollPane();
 		
@@ -1108,7 +776,7 @@ public class Crtanje extends JFrame {
 		textArea.setBackground(Color.WHITE);
 		textArea.setFont(new Font("Arial", Font.PLAIN, 13));
 		scrollPane.setViewportView(textArea);
-		GroupLayout gl_pnlIspis = new GroupLayout(pnlIspis);
+		GroupLayout gl_pnlIspis = new GroupLayout(pnlOutput);
 		gl_pnlIspis.setHorizontalGroup(
 			gl_pnlIspis.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_pnlIspis.createSequentialGroup()
@@ -1123,39 +791,16 @@ public class Crtanje extends JFrame {
 					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
 					.addContainerGap())
 		);
-		pnlIspis.setLayout(gl_pnlIspis);
+		pnlOutput.setLayout(gl_pnlIspis);
 		
 	
 	}
 
-	public JPanel getPnlModifikacijaK() {
-		return pnlModifikacijaK;
-	}
-
-
-
-	public void setPnlModifikacijaK(JPanel pnlModifikacijaK) {
-		this.pnlModifikacijaK = pnlModifikacijaK;
-	}
-
-
-
-	public JTextArea getTextArea() {
-		return textArea;
-	}
-
-
-
-	public void setTextArea(JTextArea textArea) {
-		this.textArea = textArea;
-	}
-
-
 
 	public void obojajDugme(JButton d){
-		if(selektovanoDugme != null){
+		if(selectedButton != null){
 			
-			if(selektovanoDugme == d){
+			if(selectedButton == d){
 				//System.out.println("gasim dugme");
 				/*for(int i=0;i<stekOblika.size();i++)
 			    {
@@ -1166,24 +811,24 @@ public class Crtanje extends JFrame {
 			    	}
 			    }*/
 				//controller.unSelectShape();
-				selektovanoDugme.setBackground(btnBoja.getBackground());
-				selektovanoDugme = null;
-				pnlModifikacija.setVisible(true);
-				pnlModifikacijaK.setVisible(false);
+				selectedButton.setBackground(btnColor.getBackground());
+				selectedButton = null;
+				pnlModify.setVisible(true);
+				pnlModifyK.setVisible(false);
 				//selektovan=null;
 				//selekciju ispravljati
-				btnObrisi.setEnabled(false);
-				btnModifikuj.setEnabled(false);
+				btnDelete.setEnabled(false);
+				btnModify.setEnabled(false);
 				
 				return;
 			}
 			
-			selektovanoDugme.setBackground(d.getBackground());
+			selectedButton.setBackground(d.getBackground());
 			
 		}
 
-			selektovanoDugme = d;
-			selektovanoDugme.setBackground(Color.PINK);
+			selectedButton = d;
+			selectedButton.setBackground(Color.PINK);
 			//selektovan.setSelektovan(false);
 			
 			
@@ -1201,7 +846,7 @@ public class Crtanje extends JFrame {
 			stekOblika.elementAt(i).crtajSe(pnlPozadinaZaCrtanje.getGraphics());	
 		}
 	}*/
-	public void omoguciModifikaciju(boolean p){
+	public void enableModification(boolean p){
 		
 
 
@@ -1210,14 +855,14 @@ public class Crtanje extends JFrame {
 			txtX2.setText("");
 			txtY1.setText("");
 			txtY2.setText("");
-			lblNaziva1.setText("");
-			lblNaziva2.setText("");
-			txtDuzina.setText("");
-			txtVisina.setText("");
+			lblName1.setText("");
+			lblName2.setText("");
+			txtLength.setText("");
+			txtHeight.setText("");
 			txtR.setText("");
-			if(selektovan instanceof Tacka){
-				lblBojaI.setEnabled(true);
-				btnBojaI.setEnabled(true);
+			if(selected instanceof Point){
+				lblColorEd.setEnabled(true);
+				btnColorEd.setEnabled(true);
 				txtX1.setEnabled(true);
 				txtY1.setEnabled(true);
 				lblX1.setEnabled(true);
@@ -1226,25 +871,25 @@ public class Crtanje extends JFrame {
 				txtY2.setEnabled(false);
 				lblX2.setEnabled(false);
 				lblY2.setEnabled(false);
-				lblBojaU.setEnabled(false);
-				btnBojaU.setEnabled(false);
-				lblDuzina.setEnabled(false);
-				txtDuzina.setEnabled(false);
-				lblVisina.setEnabled(false);
-				txtVisina.setEnabled(false);		
+				lblColorIn.setEnabled(false);
+				btnColorIn.setEnabled(false);
+				lblLength.setEnabled(false);
+				txtLength.setEnabled(false);
+				lblHeight.setEnabled(false);
+				txtHeight.setEnabled(false);		
 				lblR.setEnabled(false);
 				txtR.setEnabled(false);
-				lblNaziva1.setEnabled(true);
-				lblNaziva2.setEnabled(false);
+				lblName1.setEnabled(true);
+				lblName2.setEnabled(false);
 
-				lblNaziva1.setText("Koordinate tacke:");
+				lblName1.setText("Koordinate tacke:");
 
-				txtX1.setText(""+((Tacka)selektovan).getX());
-				txtY1.setText(""+((Tacka)selektovan).getY());
-				btnBojaI.setBackground(selektovan.getBoja());
+				txtX1.setText(""+((Point)selected).getX());
+				txtY1.setText(""+((Point)selected).getY());
+				btnColorEd.setBackground(selected.getColor());
 				
 
-			}else if(selektovan instanceof Linija){
+			}else if(selected instanceof Line){
 
 				txtX1.setEnabled(true);
 				txtY1.setEnabled(true);
@@ -1254,35 +899,35 @@ public class Crtanje extends JFrame {
 				txtY2.setEnabled(true);
 				lblX2.setEnabled(true);
 				lblY2.setEnabled(true);
-				lblBojaI.setEnabled(true);
-				btnBojaI.setEnabled(true);
-				lblBojaU.setEnabled(false);
-				btnBojaU.setEnabled(false);
-				lblDuzina.setEnabled(false);
-				txtDuzina.setEnabled(false);
-				lblVisina.setEnabled(false);
-				txtVisina.setEnabled(false);		
+				lblColorEd.setEnabled(true);
+				btnColorEd.setEnabled(true);
+				lblColorIn.setEnabled(false);
+				btnColorIn.setEnabled(false);
+				lblLength.setEnabled(false);
+				txtLength.setEnabled(false);
+				lblHeight.setEnabled(false);
+				txtHeight.setEnabled(false);		
 				lblR.setEnabled(false);
 				txtR.setEnabled(false);
-				lblNaziva1.setEnabled(true);
-				lblNaziva2.setEnabled(true);
+				lblName1.setEnabled(true);
+				lblName2.setEnabled(true);
 
-				lblNaziva1.setText("Koordinate pocetne tacke:");
-				lblNaziva2.setText("Koordinate krajnje tacke:");
+				lblName1.setText("Koordinate pocetne tacke:");
+				lblName2.setText("Koordinate krajnje tacke:");
 
 
-				txtX1.setText("" + ((Linija) selektovan).gettPocetna().getX());
-				txtY1.setText("" + ((Linija) selektovan).gettPocetna().getY());
+				txtX1.setText("" + ((Line) selected).getpStart().getX());
+				txtY1.setText("" + ((Line) selected).getpStart().getY());
 
-				txtX2.setText("" + ((Linija) selektovan).gettKrajnja().getX());
-				txtY2.setText("" + ((Linija) selektovan).gettKrajnja().getY());
+				txtX2.setText("" + ((Line) selected).getpEnd().getX());
+				txtY2.setText("" + ((Line) selected).getpEnd().getY());
 
-				btnBojaI.setBackground(((Linija)selektovan).getBoja());
+				btnColorEd.setBackground(((Line)selected).getColor());
 				
 
-			}else if(selektovan instanceof Pravougaonik){
-				lblBojaI.setEnabled(true);
-				btnBojaI.setEnabled(true);
+			}else if(selected instanceof Rectangle){
+				lblColorEd.setEnabled(true);
+				btnColorEd.setEnabled(true);
 				txtX1.setEnabled(true);
 				txtY1.setEnabled(true);
 				lblX1.setEnabled(true);
@@ -1291,61 +936,29 @@ public class Crtanje extends JFrame {
 				txtY2.setEnabled(false);
 				lblX2.setEnabled(false);
 				lblY2.setEnabled(false);
-				lblDuzina.setEnabled(true);
-				txtDuzina.setEnabled(true);
-				lblBojaU.setEnabled(true);
-				btnBojaU.setEnabled(true);
-				lblVisina.setEnabled(true);
-				txtVisina.setEnabled(true);
+				lblLength.setEnabled(true);
+				txtLength.setEnabled(true);
+				lblColorIn.setEnabled(true);
+				btnColorIn.setEnabled(true);
+				lblHeight.setEnabled(true);
+				txtHeight.setEnabled(true);
 				lblR.setEnabled(false);
 				txtR.setEnabled(false);
-				lblNaziva1.setEnabled(true);
-				lblNaziva2.setEnabled(false);
+				lblName1.setEnabled(true);
+				lblName2.setEnabled(false);
 
-				lblNaziva1.setText("Koordinate tacke gore levo:");
+				lblName1.setText("Koordinate tacke gore levo:");
 
-				txtX1.setText(""+((Pravougaonik)selektovan).getGoreLevo().getX());
-				txtY1.setText(""+((Pravougaonik)selektovan).getGoreLevo().getY());
-				txtDuzina.setText(""+((Pravougaonik)selektovan).getSirina());
-				txtVisina.setText(""+((Pravougaonik)selektovan).getVisina());
+				txtX1.setText(""+((Rectangle)selected).getUpLeft().getX());
+				txtY1.setText(""+((Rectangle)selected).getUpLeft().getY());
+				txtLength.setText(""+((Rectangle)selected).getSirina());
+				txtHeight.setText(""+((Rectangle)selected).getVisina());
 
-				btnBojaI.setBackground(((Pravougaonik)selektovan).getBoja());
-				btnBojaU.setBackground(((Pravougaonik)selektovan).getBojaUnutrasnjosti());
+				btnColorEd.setBackground(((Rectangle)selected).getColor());
+				btnColorIn.setBackground(((Rectangle)selected).getColorInside());
 				
 
-			}else if(selektovan instanceof Kvadrat){
-
-				txtX1.setEnabled(true);
-				txtY1.setEnabled(true);
-				lblX1.setEnabled(true);
-				lblY1.setEnabled(true);
-				txtX2.setEnabled(false);
-				txtY2.setEnabled(false);
-				lblX2.setEnabled(false);
-				lblY2.setEnabled(false);
-				lblBojaI.setEnabled(true);
-				btnBojaI.setEnabled(true);
-				lblBojaU.setEnabled(true);
-				btnBojaU.setEnabled(true);
-				lblDuzina.setEnabled(true);
-				txtDuzina.setEnabled(true);
-				lblVisina.setEnabled(false);
-				txtVisina.setEnabled(false);		
-				lblR.setEnabled(false);
-				txtR.setEnabled(false);
-				lblNaziva1.setEnabled(true);
-				lblNaziva2.setEnabled(false);
-
-				lblNaziva1.setText("Koordinate tacke gore levo:");
-
-				txtX1.setText(""+((Kvadrat)selektovan).getGoreLevo().getX());
-				txtY1.setText(""+((Kvadrat)selektovan).getGoreLevo().getY());
-				txtDuzina.setText(""+((Kvadrat)selektovan).getDuzinaStranica());
-
-				btnBojaI.setBackground(((Kvadrat)selektovan).getBoja());
-				btnBojaU.setBackground(((Kvadrat)selektovan).getBojaUnutrasnjosti());
-				
-			}else if(selektovan instanceof Krug){
+			}else if(selected instanceof Square){
 
 				txtX1.setEnabled(true);
 				txtY1.setEnabled(true);
@@ -1355,29 +968,61 @@ public class Crtanje extends JFrame {
 				txtY2.setEnabled(false);
 				lblX2.setEnabled(false);
 				lblY2.setEnabled(false);
-				lblBojaI.setEnabled(true);
-				btnBojaI.setEnabled(true);
-				lblBojaU.setEnabled(true);
-				btnBojaU.setEnabled(true);
+				lblColorEd.setEnabled(true);
+				btnColorEd.setEnabled(true);
+				lblColorIn.setEnabled(true);
+				btnColorIn.setEnabled(true);
+				lblLength.setEnabled(true);
+				txtLength.setEnabled(true);
+				lblHeight.setEnabled(false);
+				txtHeight.setEnabled(false);		
+				lblR.setEnabled(false);
+				txtR.setEnabled(false);
+				lblName1.setEnabled(true);
+				lblName2.setEnabled(false);
+
+				lblName1.setText("Koordinate tacke gore levo:");
+
+				txtX1.setText(""+((Square)selected).getUpLeft().getX());
+				txtY1.setText(""+((Square)selected).getUpLeft().getY());
+				txtLength.setText(""+((Square)selected).getEdgeLength());
+
+				btnColorEd.setBackground(((Square)selected).getColor());
+				btnColorIn.setBackground(((Square)selected).getColorInside());
+				
+			}else if(selected instanceof Circle){
+
+				txtX1.setEnabled(true);
+				txtY1.setEnabled(true);
+				lblX1.setEnabled(true);
+				lblY1.setEnabled(true);
+				txtX2.setEnabled(false);
+				txtY2.setEnabled(false);
+				lblX2.setEnabled(false);
+				lblY2.setEnabled(false);
+				lblColorEd.setEnabled(true);
+				btnColorEd.setEnabled(true);
+				lblColorIn.setEnabled(true);
+				btnColorIn.setEnabled(true);
 				lblR.setEnabled(true);
 				txtR.setEnabled(true);
-				lblDuzina.setEnabled(false);
-				txtDuzina.setEnabled(false);
-				lblVisina.setEnabled(false);
-				txtVisina.setEnabled(false);
-				lblNaziva1.setEnabled(true);
-				lblNaziva2.setEnabled(false);
+				lblLength.setEnabled(false);
+				txtLength.setEnabled(false);
+				lblHeight.setEnabled(false);
+				txtHeight.setEnabled(false);
+				lblName1.setEnabled(true);
+				lblName2.setEnabled(false);
 
-				lblNaziva1.setText("Koordinate centra:");
+				lblName1.setText("Koordinate centra:");
 
-				txtX1.setText(""+((Krug)selektovan).getCentar().getX());
-				txtY1.setText(""+((Krug)selektovan).getCentar().getY());
-				txtR.setText(""+((Krug)selektovan).getR());
+				txtX1.setText(""+((Circle)selected).getCentar().getX());
+				txtY1.setText(""+((Circle)selected).getCentar().getY());
+				txtR.setText(""+((Circle)selected).getR());
 
-				btnBojaI.setBackground(((Krug)selektovan).getBoja());
-				btnBojaU.setBackground(((Krug)selektovan).getBojaUnutrasnjosti());
+				btnColorEd.setBackground(((Circle)selected).getColor());
+				btnColorIn.setBackground(((Circle)selected).getColorInside());
 				
-			}else if(selektovan instanceof HexagonAdapter){
+			}else if(selected instanceof HexagonAdapter){
 
 				txtX1.setEnabled(true);
 				txtY1.setEnabled(true);
@@ -1387,27 +1032,27 @@ public class Crtanje extends JFrame {
 				txtY2.setEnabled(false);
 				lblX2.setEnabled(false);
 				lblY2.setEnabled(false);
-				lblBojaI.setEnabled(true);
-				btnBojaI.setEnabled(true);
-				lblBojaU.setEnabled(true);
-				btnBojaU.setEnabled(true);
+				lblColorEd.setEnabled(true);
+				btnColorEd.setEnabled(true);
+				lblColorIn.setEnabled(true);
+				btnColorIn.setEnabled(true);
 				lblR.setEnabled(true);
 				txtR.setEnabled(true);
-				lblDuzina.setEnabled(false);
-				txtDuzina.setEnabled(false);
-				lblVisina.setEnabled(false);
-				txtVisina.setEnabled(false);
-				lblNaziva1.setEnabled(true);
-				lblNaziva2.setEnabled(false);
+				lblLength.setEnabled(false);
+				txtLength.setEnabled(false);
+				lblHeight.setEnabled(false);
+				txtHeight.setEnabled(false);
+				lblName1.setEnabled(true);
+				lblName2.setEnabled(false);
 
-				lblNaziva1.setText("Koordinate centra:");
+				lblName1.setText("Koordinate centra:");
 
-				txtX1.setText(""+((HexagonAdapter)selektovan).getHexagon().getX());
-				txtY1.setText(""+((HexagonAdapter)selektovan).getHexagon().getY());
-				txtR.setText(""+((HexagonAdapter)selektovan).getHexagon().getR());
+				txtX1.setText(""+((HexagonAdapter)selected).getHexagon().getX());
+				txtY1.setText(""+((HexagonAdapter)selected).getHexagon().getY());
+				txtR.setText(""+((HexagonAdapter)selected).getHexagon().getR());
 
-				btnBojaI.setBackground(((HexagonAdapter)selektovan).getHexagon().getBorderColor());
-				btnBojaU.setBackground(((HexagonAdapter)selektovan).getHexagon().getAreaColor());
+				btnColorEd.setBackground(((HexagonAdapter)selected).getHexagon().getBorderColor());
+				btnColorIn.setBackground(((HexagonAdapter)selected).getHexagon().getAreaColor());
 				
 			}
 			
@@ -1416,23 +1061,21 @@ public class Crtanje extends JFrame {
 		
 
 	}
-	public Oblik getSelektovan() {
-		return selektovan;
+	public Shape getSelektovan() {
+		return selected;
 	}
 
 
 
-	public void setSelektovan(Oblik selektovan) {
-		this.selektovan = selektovan;
+	public void setSelektovan(Shape selektovan) {
+		this.selected = selektovan;
 	}
 
 
 
 	public void omoguciDugmad(boolean t){
-		btnModifikuj.setEnabled(t);
-		btnObrisi.setEnabled(t);
-
-		/////////////////////////////////////////////////////////////////////
+		btnModify.setEnabled(t);
+		btnDelete.setEnabled(t);
 
 
 
@@ -1461,6 +1104,338 @@ public class Crtanje extends JFrame {
 
 	public DrawingView getView() {
 		// TODO Auto-generated method stub
-		return podlogaZaCrtanje;
+		return drawingSurface;
 	}
+	
+	/*--------------------------GETTERS AND SETTERS--------------------------------*/
+
+	public JPanel getPnlMain() {
+		return pnlMain;
+	}
+
+	public void setPnlMain(JPanel pnlMain) {
+		this.pnlMain = pnlMain;
+	}
+
+	public DrawingView getDrawingSurface() {
+		return drawingSurface;
+	}
+
+	public void setDrawingSurface(DrawingView drawingSurface) {
+		this.drawingSurface = drawingSurface;
+	}
+
+	public DrawingModel getModel() {
+		return model;
+	}
+
+	public void setModel(DrawingModel model) {
+		this.model = model;
+	}
+
+	public Stack<Shape> getStackShapes() {
+		return stackShapes;
+	}
+
+	public void setStackShapes(Stack<Shape> stackShapes) {
+		this.stackShapes = stackShapes;
+	}
+
+	public JButton getSelectedButton() {
+		return selectedButton;
+	}
+
+	public void setSelectedButton(JButton selectedButton) {
+		this.selectedButton = selectedButton;
+	}
+
+	public JButton getBtnInsideColor() {
+		return btnInsideColor;
+	}
+
+	public void setBtnInsideColor(JButton btnInsideColor) {
+		this.btnInsideColor = btnInsideColor;
+	}
+
+	public JButton getBtnEdgeColor() {
+		return btnEdgeColor;
+	}
+
+	public void setBtnEdgeColor(JButton btnEdgeColor) {
+		this.btnEdgeColor = btnEdgeColor;
+	}
+
+	public Shape getSelected() {
+		return selected;
+	}
+
+	public void setSelected(Shape selected) {
+		this.selected = selected;
+	}
+
+	public JButton getBtnModify() {
+		return btnModify;
+	}
+
+	public void setBtnModify(JButton btnModify) {
+		this.btnModify = btnModify;
+	}
+
+	public JButton getBtnDelete() {
+		return btnDelete;
+	}
+
+	public void setBtnDelete(JButton btnDelete) {
+		this.btnDelete = btnDelete;
+	}
+
+	public boolean isConfirmation() {
+		return confirmation;
+	}
+
+	public void setConfirmation(boolean confirmation) {
+		this.confirmation = confirmation;
+	}
+
+	public JPanel getPnlModify() {
+		return pnlModify;
+	}
+
+	public void setPnlModify(JPanel pnlModify) {
+		this.pnlModify = pnlModify;
+	}
+
+	public JTextField getTxtX1() {
+		return txtX1;
+	}
+
+	public void setTxtX1(JTextField txtX1) {
+		this.txtX1 = txtX1;
+	}
+
+	public JTextField getTxtLength() {
+		return txtLength;
+	}
+
+	public void setTxtLength(JTextField txtLength) {
+		this.txtLength = txtLength;
+	}
+
+	public JTextField getTxtY1() {
+		return txtY1;
+	}
+
+	public void setTxtY1(JTextField txtY1) {
+		this.txtY1 = txtY1;
+	}
+
+	public JTextField getTxtHeight() {
+		return txtHeight;
+	}
+
+	public void setTxtHeight(JTextField txtHeight) {
+		this.txtHeight = txtHeight;
+	}
+
+	public JTextField getTxtR() {
+		return txtR;
+	}
+
+	public void setTxtR(JTextField txtR) {
+		this.txtR = txtR;
+	}
+
+	public JButton getBtnColorIn() {
+		return btnColorIn;
+	}
+
+	public void setBtnColorIn(JButton btnColorIn) {
+		this.btnColorIn = btnColorIn;
+	}
+
+	public JButton getBtnColorEd() {
+		return btnColorEd;
+	}
+
+	public void setBtnColorEd(JButton btnColorEd) {
+		this.btnColorEd = btnColorEd;
+	}
+
+	public JPanel getPnlModifyK() {
+		return pnlModifyK;
+	}
+
+	public void setPnlModifyK(JPanel pnlModifyK) {
+		this.pnlModifyK = pnlModifyK;
+	}
+
+	public JTextField getTxtX2() {
+		return txtX2;
+	}
+
+	public void setTxtX2(JTextField txtX2) {
+		this.txtX2 = txtX2;
+	}
+
+	public JTextField getTxtY2() {
+		return txtY2;
+	}
+
+	public void setTxtY2(JTextField txtY2) {
+		this.txtY2 = txtY2;
+	}
+
+	public JButton getBtnColor() {
+		return btnColor;
+	}
+
+	public void setBtnColor(JButton btnColor) {
+		this.btnColor = btnColor;
+	}
+
+	public JButton getBtnPoint() {
+		return btnPoint;
+	}
+
+	public void setBtnPoint(JButton btnPoint) {
+		this.btnPoint = btnPoint;
+	}
+
+	public JButton getBtnCircle() {
+		return btnCircle;
+	}
+
+	public void setBtnCircle(JButton btnCircle) {
+		this.btnCircle = btnCircle;
+	}
+
+	public JButton getBtnLine() {
+		return btnLine;
+	}
+
+	public void setBtnLine(JButton btnLine) {
+		this.btnLine = btnLine;
+	}
+
+	public JButton getBtnSquare() {
+		return btnSquare;
+	}
+
+	public void setBtnSquare(JButton btnSquare) {
+		this.btnSquare = btnSquare;
+	}
+
+	public JButton getBtnRectangle() {
+		return btnRectangle;
+	}
+
+	public void setBtnRectangle(JButton btnRectangle) {
+		this.btnRectangle = btnRectangle;
+	}
+
+	public JButton getBtnSelect() {
+		return btnSelect;
+	}
+
+	public void setBtnSelect(JButton btnSelect) {
+		this.btnSelect = btnSelect;
+	}
+
+	public DrawingController getController() {
+		return controller;
+	}
+
+	public void setController(DrawingController controller) {
+		this.controller = controller;
+	}
+
+	public JPanel getPnlFrontAndBack() {
+		return pnlFrontAndBack;
+	}
+
+	public void setPnlFrontAndBack(JPanel pnlFrontAndBack) {
+		this.pnlFrontAndBack = pnlFrontAndBack;
+	}
+
+	public JButton getBtnToFront() {
+		return btnToFront;
+	}
+
+	public void setBtnToFront(JButton btnToFront) {
+		this.btnToFront = btnToFront;
+	}
+
+	public JButton getBtnToBack() {
+		return btnToBack;
+	}
+
+	public void setBtnToBack(JButton btnToBack) {
+		this.btnToBack = btnToBack;
+	}
+
+	public JButton getBtnBringToFront() {
+		return btnBringToFront;
+	}
+
+	public void setBtnBringToFront(JButton btnBringToFront) {
+		this.btnBringToFront = btnBringToFront;
+	}
+
+	public JButton getBtnBringToBack() {
+		return btnBringToBack;
+	}
+
+	public void setBtnBringToBack(JButton btnBringToBack) {
+		this.btnBringToBack = btnBringToBack;
+	}
+
+	public JButton getBtnHexagon() {
+		return btnHexagon;
+	}
+
+	public void setBtnHexagon(JButton btnHexagon) {
+		this.btnHexagon = btnHexagon;
+	}
+
+	public JPanel getPnlIspis() {
+		return pnlOutput;
+	}
+
+	public void setPnlIspis(JPanel pnlIspis) {
+		this.pnlOutput = pnlIspis;
+	}
+
+	public JScrollPane getScrollPane() {
+		return scrollPane;
+	}
+
+	public void setScrollPane(JScrollPane scrollPane) {
+		this.scrollPane = scrollPane;
+	}
+
+	public Button getBtn() {
+		return btn;
+	}
+
+	public void setBtn(Button btn) {
+		this.btn = btn;
+	}
+
+	public JPanel getPanelModifyK() {
+		return pnlModifyK;
+	}
+
+
+
+	public JTextArea getTextArea() {
+		return textArea;
+	}
+
+
+
+	public void setTextArea(JTextArea textArea) {
+		this.textArea = textArea;
+	}
+
+
 }

@@ -1,7 +1,9 @@
-package mvc;
+package app;
 
+import mvc.DrawingController;
+import mvc.DrawingModel;
+import mvc.Frame;
 import observer.ButtonObserver;
-import wb.Crtanje;
 
 public class AppStart  {
 
@@ -10,7 +12,7 @@ public class AppStart  {
 
 		
 		DrawingModel model = new DrawingModel();
-		Crtanje frame = new Crtanje();
+		Frame frame = new Frame();
 		frame.getView().setModel(model);
 		DrawingController controller = new DrawingController(model, frame);
 		frame.setController(controller);

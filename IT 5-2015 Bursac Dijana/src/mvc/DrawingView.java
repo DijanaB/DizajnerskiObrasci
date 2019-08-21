@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 import javax.swing.JPanel;
 
-import geometrija.Oblik;
+import geometrija.Shape;
 
 public class DrawingView extends JPanel {
  
@@ -30,10 +30,10 @@ public class DrawingView extends JPanel {
 		super.paint(g);
 		if(model!=null) {
 			
-			Iterator<Oblik> it = model.getShapes().iterator();
+			Iterator<Shape> it = model.getShapes().iterator();
 			while (it.hasNext()) {
 				
-				it.next().crtajSe(g);
+				it.next().drawIt(g);
 				
 			}
 			repaint();

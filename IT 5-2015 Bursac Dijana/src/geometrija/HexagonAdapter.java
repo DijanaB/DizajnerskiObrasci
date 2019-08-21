@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 import hexagon.Hexagon;
 
-public class HexagonAdapter extends PovrsinskiOblik  {
+public class HexagonAdapter extends SurfaceShape  {
 	
 	private Hexagon hexagon;
 	
@@ -22,10 +22,10 @@ public class HexagonAdapter extends PovrsinskiOblik  {
 		
 	}
 	
-	public HexagonAdapter(int x,int y,int r,Color bojaKonture, Color bojaUnutrasnjosti) {
+	public HexagonAdapter(int x,int y,int r,Color BorderColor, Color AreaColor) {
 		this.hexagon = new Hexagon(x,y,r);
-		this.hexagon.setBorderColor(bojaKonture);
-		this.hexagon.setAreaColor(bojaUnutrasnjosti);
+		this.hexagon.setBorderColor(BorderColor);
+		this.hexagon.setAreaColor(AreaColor);
 		
 	}
 
@@ -44,7 +44,7 @@ public class HexagonAdapter extends PovrsinskiOblik  {
 
 
 	@Override
-	public void popuni(Graphics g) {
+	public void fill(Graphics g) {
 	
 		g.setColor(hexagon.getAreaColor());
 		
@@ -52,29 +52,29 @@ public class HexagonAdapter extends PovrsinskiOblik  {
 	}
 
 	@Override
-	public void crtajSe(Graphics g) {
+	public void drawIt(Graphics g) {
 		hexagon.paint(g);
 		
 		
 	}
 
 	@Override
-	public void selektovan(Graphics g) {
+	public void selected(Graphics g) {
 	
 		g.setColor(Color.BLUE);
 		hexagon.setSelected(true);
-		super.setSelektovan(true);	
+		super.setSelected(true);	
 		
 		
 		
 	}
 	
 	public String toString() {
-		return "Hexagon: ("+getHexagon().getX()+","+getHexagon().getY()+"), radius: "+getHexagon().getR()+", outline: "+getHexagon().getBorderColor()+", fill: "+getHexagon().getAreaColor()+", selected: "+isSelektovan();
+		return "Hexagon: ("+getHexagon().getX()+","+getHexagon().getY()+"), radius: "+getHexagon().getR()+", outline: "+getHexagon().getBorderColor()+", fill: "+getHexagon().getAreaColor()+", selected: "+isSelected();
 	}
 
 	@Override
-	public boolean sadrzi(int x, int y) {
+	public boolean contains(int x, int y) {
 		return hexagon.doesContain(x, y);
 	}
 

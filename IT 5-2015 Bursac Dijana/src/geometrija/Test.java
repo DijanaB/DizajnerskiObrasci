@@ -212,12 +212,12 @@ public class Test {
 		hm.remove("krug");
 		System.out.println(hm.get("krug"));
 		System.out.println(hm.values());*/
-		Tacka t1 = new Tacka(10, 10);
-		Tacka t2 = new Tacka(20, 20);
-		Tacka t3 = new Tacka(30, 30);
-		Tacka t4 = new Tacka(40, 40);
+		Point t1 = new Point(10, 10);
+		Point t2 = new Point(20, 20);
+		Point t3 = new Point(30, 30);
+		Point t4 = new Point(40, 40);
 
-		Tacka [] nizTacaka = new Tacka[4];
+		Point [] nizTacaka = new Point[4];
 		nizTacaka[0] = t3;
 		nizTacaka[1] = t2;
 		nizTacaka[2] = t4;

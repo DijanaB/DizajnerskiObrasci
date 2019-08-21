@@ -1,19 +1,19 @@
 package command;
 
-import geometrija.Oblik;
+import geometrija.Shape;
 import mvc.DrawingModel;
 
 public class CmdAddShape implements Command {
 
 	DrawingModel model = new DrawingModel();
-	Oblik o;
+	Shape o;
 	
 	public CmdAddShape() {
 		
 		
 	}
 	
-	public CmdAddShape(Oblik o, DrawingModel model) {
+	public CmdAddShape(Shape o, DrawingModel model) {
 		
 		this.model=model;
 		this.o=o;

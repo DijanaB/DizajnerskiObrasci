@@ -3,43 +3,45 @@ package mvc;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import geometrija.Oblik;
+import geometrija.Shape;
 
 public class DrawingModel {
 
-	private ArrayList <Oblik> shapes = new ArrayList <Oblik>(); 
-	private Stack <Oblik> stackShapesUndo = new Stack <Oblik>();
+	private ArrayList <Shape> shapes = new ArrayList <Shape>(); 
+	private Stack <Shape> stackShapesUndo = new Stack <Shape>();
 	
-	public ArrayList<Oblik> getShapes(){
+	public ArrayList<Shape> getShapes(){
 		return shapes;
 		
 			
 	}
 	
-	public void add(Oblik shape) {
+	public void add(Shape shape) {
 		
 		shapes.add(shape);
+		System.out.println("DODAO SAM GA U LSITU OBJEKATA I IMA IH ");
+		
 	}
 	
-	public boolean remove (Oblik shape) {
+	public boolean remove (Shape shape) {
 		
 		return shapes.remove(shape);
 	}
 	
-	public Oblik get (int i) {
+	public Shape get (int i) {
 		
 		return shapes.get(i);
 	}
 
-	public Stack<Oblik> getStackShapesUndo() {
+	public Stack<Shape> getStackShapesUndo() {
 		return stackShapesUndo;
 	}
 
-	public void setStackShapes(Stack<Oblik> stackShapes) {
+	public void setStackShapes(Stack<Shape> stackShapes) {
 		this.stackShapesUndo = stackShapes;
 	}
 
-	public void setShapes(ArrayList<Oblik> shapes) {
+	public void setShapes(ArrayList<Shape> shapes) {
 		this.shapes = shapes;
 	}
 	

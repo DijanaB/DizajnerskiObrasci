@@ -7,10 +7,10 @@ import javax.swing.JPanel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class Crtez extends JPanel{
+public class Panel extends JPanel{
 	int x;
 	int y;
-	public Crtez() {
+	public Panel() {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -23,15 +23,15 @@ public class Crtez extends JPanel{
 	public static void main(String[] args){
 		JFrame prozor = new JFrame("Crtanje");
 		prozor.setSize(800, 600);
-		Crtez c = new Crtez();
+		Panel c = new Panel();
 		prozor.getContentPane().add(c);
 		prozor.setVisible(true);
 		prozor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	public void paint(Graphics g){
-		Tacka t1 = new Tacka(x,y);
-		t1.crtajSe(g);
+		Point t1 = new Point(x,y);
+		t1.drawIt(g);
 		repaint();
 		/*t1.setSelektovan(true);
 		t1.crtajSe(g);

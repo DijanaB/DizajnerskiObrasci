@@ -9,30 +9,29 @@ import command.CmdAddShape;
 import command.CmdRemoveShape;
 import command.CmdUpdateShape;
 import geometrija.HexagonAdapter;
-import geometrija.Krug;
-import geometrija.Kvadrat;
-import geometrija.Linija;
-import geometrija.Oblik;
-import geometrija.Pravougaonik;
-import geometrija.Tacka;
+import geometrija.Circle;
+import geometrija.Square;
+import geometrija.Line;
+import geometrija.Shape;
+import geometrija.Rectangle;
+import geometrija.Point;
 import hexagon.Hexagon;
-import wb.Crtanje;
 
 public class DrawingController {
 	
 	private boolean potvrda;
-	private Oblik selektovan;
+	private Shape selected;
 	private int korak = 1;
-	Tacka t1 = null;
+	Point t1 = null;
 	
 	private DrawingModel model = new DrawingModel();
-	private Crtanje frame = new Crtanje();
+	private Frame frame = new Frame();
 	private CmdAddShape cmdAddShape ;
 	private CmdRemoveShape cmdRemoveShape;
 	private  CmdUpdateShape cmdUpdateShape;
 	
 	
-	public DrawingController (DrawingModel model, Crtanje frame) {
+	public DrawingController (DrawingModel model, Frame frame) {
 		
 		this.model= model;
 		this.frame = frame;
@@ -41,15 +40,15 @@ public class DrawingController {
 	
 	public void deleteShape() {
 		
-		Object[] opcije={"Da","Ne"};
-		int n = JOptionPane.showOptionDialog(null,"Da li ste sigurni da zelite da obrisete objekat?","Upozorenje", JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,opcije,opcije[1]);
+		Object[] opcije={"Yes","No"};
+		int n = JOptionPane.showOptionDialog(null,"Are you sure you want to delete shape?","Warning", JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,opcije,opcije[1]);
 		if(n==0){
 			
-			ArrayList<Oblik> oblici = new ArrayList<Oblik>();
+			ArrayList<Shape> oblici = new ArrayList<Shape>();
 			
 			for(int i=0; i<model.getShapes().size(); i++) {
 				
-				if(model.getShapes().get(i).isSelektovan() == true) {
+				if(model.getShapes().get(i).isSelected() == true) {
 					
 					oblici.add(model.getShapes().get(i));
 				}
@@ -75,12 +74,11 @@ public class DrawingController {
 				}
 			}
 			selektovan=null;*/
-			
-			frame.getBtnObrisi().setEnabled(false);
+			frame.getBtnDelete().setEnabled(false);
 			//btnObrisi.setEnabled(false);
-			frame.getBtnModifikuj().setEnabled(false);
+			frame.getBtnModify().setEnabled(false);
 			//btnModifikuj.setEnabled(false);
-			frame.getPnlModifikacijaK().setVisible(false);
+			frame.getPnlModify().setVisible(false);
 			//frame.getPnlModifikacija().setVisible(false);
 			//pnlModifikacija.setVisible(false);
 			
@@ -92,9 +90,9 @@ public class DrawingController {
 		for(int i=0;i<model.getShapes().size();i++)
 	    {
 	    	//uklanja se selektovan objekat ako postoji takav
-	    	if(model.getShapes().get(i).isSelektovan())
+	    	if(model.getShapes().get(i).isSelected())
 	    	{
-	    		model.getShapes().get(i).setSelektovan(false);
+	    		model.getShapes().get(i).setSelected(false);
 	    	}
 	    }
 		
@@ -116,10 +114,10 @@ public class DrawingController {
 		//unSelectShape();
 		//System.out.println(model.getStackShapes().size()+"**************");
 		
-		if(frame.getSelektovanoDugme() == frame.getBtnTacka()){
+		if(frame.getSelectedButton() == frame.getBtnPoint()){
 			
 			
-			Tacka t = new Tacka(x,y,outLine);
+			Point t = new Point(x,y,outLine);
 			cmdAddShape = new CmdAddShape(t, model);
 			cmdAddShape.execute();
 			//t.crtajSe(podlogaZaCrtanje.getGraphics());
@@ -129,13 +127,13 @@ public class DrawingController {
 			
 			//model.add(t);
 			
-		}else if (frame.getSelektovanoDugme() == frame.getBtnLinija()){
+		}else if (frame.getSelectedButton() == frame.getBtnLine()){
 			if(korak == 1){
-				t1 = new Tacka(x, y);
+				t1 = new Point(x, y);
 				korak++;
 			}else{
-				Tacka t2 = new Tacka(x, y);		
-				Linija l = new Linija(t1,t2,frame.getBtnBojaIvice().getBackground());
+				Point t2 = new Point(x, y);		
+				Line l = new Line(t1,t2,frame.getBtnEdgeColor().getBackground());
 				cmdAddShape = new CmdAddShape(l, model);
 				cmdAddShape.execute();
 				
@@ -146,8 +144,8 @@ public class DrawingController {
 				//model.add(l);
 				korak = 1;
 			}
-		}else if (frame.getSelektovanoDugme() == frame.getBtnKvadrat()){
-			Tacka t = new Tacka(x, y);
+		}else if (frame.getSelectedButton() == frame.getBtnSquare()){
+			Point t = new Point(x, y);
 
 			potvrda = true;
 			while(potvrda){
@@ -161,9 +159,9 @@ public class DrawingController {
 					int duzina = Integer.parseInt(inp);
 
 					if(duzina <= 0){
-						System.out.println("Greska broj mali!");
+						System.out.println("Error! Number is too low");
 					}else{
-						Kvadrat k = new Kvadrat(t, duzina,outLine,fillColor);
+						Square k = new Square(t, duzina,outLine,fillColor);
 						cmdAddShape = new CmdAddShape(k, model);
 						cmdAddShape.execute();
 						model.getStackShapesUndo().add(k);
@@ -176,12 +174,12 @@ public class DrawingController {
 
 
 				} catch (NumberFormatException e) {
-					System.out.println("Greska! Unet string!");
+					System.out.println("Error! You entered string!");
 
 				}
 			}
 
-		}else if (frame.getSelektovanoDugme() == frame.getBtnHexagon()){
+		}else if (frame.getSelectedButton() == frame.getBtnHexagon()){
 			potvrda = true;
 			while(potvrda){
 				String inp = JOptionPane.showInputDialog(null,"Unesite duzinu poluprecnika:","Heksagon, unos duzine poluprecnika:", JOptionPane.QUESTION_MESSAGE);
@@ -194,9 +192,9 @@ public class DrawingController {
 					int R = Integer.parseInt(inp);
 
 					if(R <= 0){
-						System.out.println("Greska broj mali!");
+						System.out.println("Error! Number is too low");
 					}else{						
-						HexagonAdapter h = new HexagonAdapter(x, y, R, frame.getBtnBojaIvice().getBackground(), frame.getBtnBojaUnutrasnjosti().getBackground());
+						HexagonAdapter h = new HexagonAdapter(x, y, R, frame.getBtnEdgeColor().getBackground(), frame.getBtnInsideColor().getBackground());
 						model.getStackShapesUndo().add(h);
 						cmdAddShape = new CmdAddShape(h, model);
 						cmdAddShape.execute();
@@ -216,8 +214,8 @@ public class DrawingController {
 				}
 			}
 
-		}else if (frame.getSelektovanoDugme() == frame.getBtnPravougaonik()){
-			Tacka t = new Tacka(x, y);
+		}else if (frame.getSelectedButton() == frame.getBtnRectangle()){
+			Point t = new Point(x, y);
 			potvrda=true;
 			while(potvrda){
 				try{
@@ -233,7 +231,7 @@ public class DrawingController {
 							break;
 						int visina = Integer.parseInt(inp2);
 						if(visina>0){
-							Pravougaonik p = new Pravougaonik(t,duzina,visina,frame.getBtnBojaIvice().getBackground(),frame.getBtnBojaUnutrasnjosti().getBackground());
+							Rectangle p = new Rectangle(t,duzina,visina,frame.getBtnEdgeColor().getBackground(),frame.getBtnInsideColor().getBackground());
 							System.out.println(p.toString());
 							cmdAddShape = new CmdAddShape(p, model);
 							cmdAddShape.execute();
@@ -264,8 +262,8 @@ public class DrawingController {
 
 
 
-		}else if (frame.getSelektovanoDugme() == frame.getBtnKrug()){
-			Tacka t = new Tacka(x, y);
+		}else if (frame.getSelectedButton() == frame.getBtnCircle()){
+			Point t = new Point(x, y);
 			potvrda=true;
 			while(potvrda){
 				try{
@@ -274,7 +272,7 @@ public class DrawingController {
 						break;
 					int r =Integer.parseInt(inp);
 					if(r>0){
-						Krug kr=new Krug(t,r,frame.getBtnBojaIvice().getBackground(),frame.getBtnBojaUnutrasnjosti().getBackground());
+						Circle kr=new Circle(t,r,frame.getBtnEdgeColor().getBackground(),frame.getBtnInsideColor().getBackground());
 						//kr.crtajSe(podlogaZaCrtanje.getGraphics());
 						cmdAddShape = new CmdAddShape(kr, model);
 						cmdAddShape.execute();
@@ -298,13 +296,13 @@ public class DrawingController {
 			}
 
 
-
-		}else if(frame.getSelektovanoDugme()==frame.getBtnSelektuj()){
+			/////SELEKCIJAAAA
+		}else if(frame.getSelectedButton()==frame.getBtnSelect()){
 			
 			frame.omoguciDugmad(false);
-			frame.getPnlModifikacija().setVisible(true);
-			frame.getPnlModifikacijaK().setVisible(false);
-			setPnlModification();
+			frame.getPnlModify().setVisible(true);
+			frame.getPanelModifyK().setVisible(false);
+			//setPnlModification();
 			
 			/*if(selektovan!= null){
 				selektovan.setSelektovan(false);
@@ -319,28 +317,32 @@ public class DrawingController {
 			
 			for(int i = 0; i < model.getShapes().size();i++)
 			{
-				if(model.getShapes().get(i).sadrzi(x, y))
+				if(model.getShapes().get(i).contains(x, y))
 				{
 					
-					selektovan = model.getShapes().get(i);
-					Oblik s = (Oblik) model.getShapes().get(i).clone();
-					selektovan.setSelektovan(true);
+					selected = model.getShapes().get(i);
+					Shape s = (Shape) model.getShapes().get(i).clone();
+					selected.setSelected(true);
 					frame.omoguciDugmad(true);
+					
 					model.getStackShapesUndo().add(s);
+					
 					cmdUpdateShape = new CmdUpdateShape(s, model.getStackShapesUndo().get(i));
+					
 					cmdUpdateShape.execute();
 					
+					setPnlModification();
 					m++;
 				
-					
+					//OVO JE SELEKTOVANJE UKOLIKO SU DVA OBJEKTA JEDAN PREKO DRUGOG DA SELEKTUJE ONOG KOJI JE NA VRHU
 					if(m>1) {
 						
 						for(int j = 0; j < model.getShapes().size();j++) {
 							
 							if(!model.getShapes().get(j).equals(model.getStackShapesUndo().peek())) {
 								
-								model.getShapes().get(j).setSelektovan(false);
-								setPnlModification();
+								model.getShapes().get(j).setSelected(false);
+								
 							}
 						}
 						
@@ -360,6 +362,7 @@ public class DrawingController {
 				
 				
 			}
+			
 			
 			if(m==0) {
 				
@@ -421,20 +424,21 @@ public class DrawingController {
 	
 	public void shapeModification() {
 		
-		Oblik s;
+		Shape s;
+		frame.getPnlModifyK().setEnabled(true);
 		
-		if(selektovan instanceof Tacka){
+		if(selected instanceof Point){
 			try {
 				
-				s = (Oblik) selektovan.clone();
+				s = (Shape) selected.clone();
 				
 				
-				((Tacka)selektovan).setX(Integer.parseInt(frame.getTxtX1().getText()));
-				((Tacka)selektovan).setY(Integer.parseInt(frame.getTxtY1().getText()));
-				((Tacka)selektovan).setBoja(frame.getBtnBojaI().getBackground());
-				((Tacka)selektovan).setSelektovan(false);
+				((Point)selected).setX(Integer.parseInt(frame.getTxtX1().getText()));
+				((Point)selected).setY(Integer.parseInt(frame.getTxtY1().getText()));
+				((Point)selected).setColor(frame.getBtnColorEd().getBackground());
+				((Point)selected).setSelected(false);
 				
-				cmdUpdateShape = new CmdUpdateShape(s, selektovan);
+				cmdUpdateShape = new CmdUpdateShape(s, selected);
 				cmdAddShape.execute();
 				
 			
@@ -446,19 +450,19 @@ public class DrawingController {
 			}
 
 
-		}else if(selektovan instanceof Linija){
+		}else if(selected instanceof Line){
 			try {
 				
-				s = (Oblik) selektovan.clone();
+				s = (Shape) selected.clone();
 				
-				((Linija)selektovan).gettPocetna().setX(Integer.parseInt(frame.getTxtX1().getText()));
-				((Linija)selektovan).gettPocetna().setY(Integer.parseInt(frame.getTxtY1().getText()));
-				((Linija)selektovan).gettKrajnja().setX(Integer.parseInt(frame.getTxtX2().getText()));
-				((Linija)selektovan).gettKrajnja().setY(Integer.parseInt(frame.getTxtY2().getText()));
-				((Linija)selektovan).setBoja(frame.getBtnBojaI().getBackground());
-				((Linija)selektovan).setSelektovan(false);
+				((Line)selected).getpStart().setX(Integer.parseInt(frame.getTxtX1().getText()));
+				((Line)selected).getpStart().setY(Integer.parseInt(frame.getTxtY1().getText()));
+				((Line)selected).getpEnd().setX(Integer.parseInt(frame.getTxtX2().getText()));
+				((Line)selected).getpEnd().setY(Integer.parseInt(frame.getTxtY2().getText()));
+				((Line)selected).setColor(frame.getBtnColorEd().getBackground());
+				((Line)selected).setSelected(false);
 				
-				cmdUpdateShape = new CmdUpdateShape(s, selektovan);
+				cmdUpdateShape = new CmdUpdateShape(s, selected);
 				cmdAddShape.execute();
 				
 				
@@ -467,17 +471,17 @@ public class DrawingController {
 			} catch (Exception e1) {
 
 			}
-		}else if(selektovan instanceof Pravougaonik){
+		}else if(selected instanceof Rectangle){
 			try {
-				((Pravougaonik)selektovan).getGoreLevo().setX(Integer.parseInt(frame.getTxtX1().getText()));
-				((Pravougaonik)selektovan).getGoreLevo().setY(Integer.parseInt(frame.getTxtY1().getText()));
-				((Pravougaonik)selektovan).setDuzinaStranice(Integer.parseInt(frame.getTxtDuzina().getText()));
-				((Pravougaonik)selektovan).setDuzinaStranice(Integer.parseInt(frame.getTxtVisina().getText()));
+				((Rectangle)selected).getUpLeft().setX(Integer.parseInt(frame.getTxtX1().getText()));
+				((Rectangle)selected).getUpLeft().setY(Integer.parseInt(frame.getTxtY1().getText()));
+				((Rectangle)selected).setEdgeLength(Integer.parseInt(frame.getTxtLength().getText()));
+				((Rectangle)selected).setEdgeLength(Integer.parseInt(frame.getTxtHeight().getText()));
 
 
-				((Pravougaonik)selektovan).setBoja(frame.getBtnBojaI().getBackground());
-				((Pravougaonik)selektovan).setBojaUnutrasnjosti(frame.getBtnBojaU().getBackground());
-				((Pravougaonik)selektovan).setSelektovan(false);
+				((Rectangle)selected).setColor(frame.getBtnColorEd().getBackground());
+				((Rectangle)selected).setColorInside(frame.getBtnColorIn().getBackground());
+				((Rectangle)selected).setSelected(false);
 				
 				
 
@@ -486,16 +490,16 @@ public class DrawingController {
 			} catch (Exception e1) {
 
 			}
-		}else if(selektovan instanceof Kvadrat){
+		}else if(selected instanceof Square){
 			try {
-				((Kvadrat)selektovan).getGoreLevo().setX(Integer.parseInt(frame.getTxtX1().getText()));
-				((Kvadrat)selektovan).getGoreLevo().setY(Integer.parseInt(frame.getTxtY1().getText()));
-				((Kvadrat)selektovan).setDuzinaStranice(Integer.parseInt(frame.getTxtDuzina().getText()));
+				((Square)selected).getUpLeft().setX(Integer.parseInt(frame.getTxtX1().getText()));
+				((Square)selected).getUpLeft().setY(Integer.parseInt(frame.getTxtY1().getText()));
+				((Square)selected).setEdgeLength(Integer.parseInt(frame.getTxtLength().getText()));
 
 
-				((Kvadrat)selektovan).setBoja(frame.getBtnBojaI().getBackground());
-				((Kvadrat)selektovan).setBojaUnutrasnjosti(frame.getBtnBojaU().getBackground());
-				((Kvadrat)selektovan).setSelektovan(false);
+				((Square)selected).setColor(frame.getBtnColorEd().getBackground());
+				((Square)selected).setColorInside(frame.getBtnColorIn().getBackground());
+				((Square)selected).setSelected(false);
 				
 				
 			} catch (NumberFormatException e1) {
@@ -503,16 +507,16 @@ public class DrawingController {
 			} catch (Exception e1) {
 
 			}
-		}else if(selektovan instanceof Krug){
+		}else if(selected instanceof Circle){
 			try {
-				((Krug)selektovan).getCentar().setX(Integer.parseInt(frame.getTxtX1().getText()));
-				((Krug)selektovan).getCentar().setY(Integer.parseInt(frame.getTxtY1().getText()));
-				((Krug)selektovan).setR(Integer.parseInt(frame.getTxtR().getText()));
+				((Circle)selected).getCentar().setX(Integer.parseInt(frame.getTxtX1().getText()));
+				((Circle)selected).getCentar().setY(Integer.parseInt(frame.getTxtY1().getText()));
+				((Circle)selected).setR(Integer.parseInt(frame.getTxtR().getText()));
 
 
-				((Krug)selektovan).setBoja(frame.getBtnBojaI().getBackground());
-				((Krug)selektovan).setBojaUnutrasnjosti(frame.getBtnBojaU().getBackground());
-				((Krug)selektovan).setSelektovan(false);
+				((Circle)selected).setColor(frame.getBtnColorEd().getBackground());
+				((Circle)selected).setColorInside(frame.getBtnColorIn().getBackground());
+				((Circle)selected).setSelected(false);
 				
 				
 
@@ -521,16 +525,16 @@ public class DrawingController {
 			} catch (Exception e1) {
 
 			}
-		}else if(selektovan instanceof HexagonAdapter){
+		}else if(selected instanceof HexagonAdapter){
 			try {
-				((HexagonAdapter)selektovan).getHexagon().setX(Integer.parseInt(frame.getTxtX1().getText()));
-				((HexagonAdapter)selektovan).getHexagon().setY(Integer.parseInt(frame.getTxtY1().getText()));
-				((HexagonAdapter)selektovan).getHexagon().setR(Integer.parseInt(frame.getTxtR().getText()));
+				((HexagonAdapter)selected).getHexagon().setX(Integer.parseInt(frame.getTxtX1().getText()));
+				((HexagonAdapter)selected).getHexagon().setY(Integer.parseInt(frame.getTxtY1().getText()));
+				((HexagonAdapter)selected).getHexagon().setR(Integer.parseInt(frame.getTxtR().getText()));
 
 
-				((HexagonAdapter)selektovan).getHexagon().setBorderColor(frame.getBtnBojaI().getBackground());
-				((HexagonAdapter)selektovan).getHexagon().setAreaColor(frame.getBtnBojaU().getBackground());
-				((HexagonAdapter)selektovan).setSelektovan(false);
+				((HexagonAdapter)selected).getHexagon().setBorderColor(frame.getBtnColorEd().getBackground());
+				((HexagonAdapter)selected).getHexagon().setAreaColor(frame.getBtnColorIn().getBackground());
+				((HexagonAdapter)selected).setSelected(false);
 				
 				
 
@@ -543,26 +547,25 @@ public class DrawingController {
 	}
 	public void setPnlModification() {
 		
-		frame.getPnlModifikacijaK().setVisible(false);
-		
+		frame.getPanelModifyK().setVisible(false);
 		int a=0;
-		
 		for(int i = 0; i < model.getShapes().size();i++) {
 			
-			if(model.getShapes().get(i).isSelektovan())
+	
+			if(model.getShapes().get(i).isSelected())
 			{
 				a++;
+				System.out.println("NASAO SAM SELEKTOVAN OBJEKAT");
 			}
 			
 		}
-		
 		if(a==1) {
 			
-			frame.getPnlModifikacijaK().setVisible(true);
+			frame.getPanelModifyK().setVisible(true);
 			
 		}else if(a>1) {
 			
-			frame.getPnlModifikacijaK().setVisible(false);
+			frame.getPanelModifyK().setVisible(false);
 		}
 		
 	}

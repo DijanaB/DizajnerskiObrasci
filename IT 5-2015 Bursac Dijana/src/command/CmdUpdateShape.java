@@ -1,22 +1,22 @@
 package command;
 
 import geometrija.HexagonAdapter;
-import geometrija.Krug;
-import geometrija.Kvadrat;
-import geometrija.Linija;
-import geometrija.Oblik;
-import geometrija.Pravougaonik;
-import geometrija.Tacka;
+import geometrija.Circle;
+import geometrija.Square;
+import geometrija.Line;
+import geometrija.Shape;
+import geometrija.Rectangle;
+import geometrija.Point;
 import mvc.DrawingModel;
 
 public class CmdUpdateShape implements Command {
 	
-	private Oblik original;
-	private Oblik newState;
-	private Oblik oldState;
+	private Shape original;
+	private Shape newState;
+	private Shape oldState;
 	private DrawingModel model = new DrawingModel();
 
-	public CmdUpdateShape(Oblik original,Oblik newState) {
+	public CmdUpdateShape(Shape original,Shape newState) {
 
 
 		this.original = original;
@@ -27,21 +27,22 @@ public class CmdUpdateShape implements Command {
 	@Override
 	public void execute() {
 		
-		if(original instanceof Tacka){
+		if(original instanceof Point){
 			try {
 				
-				oldState = new Tacka();
+				oldState = new Point();
 				
-				((Tacka) oldState).setX(((Tacka) original).getX());
-				((Tacka) oldState).setY(((Tacka) original).getY());
-				oldState.setBoja(original.getBoja());
-				oldState.setSelektovan(original.isSelektovan());
+				((Point) oldState).setX(((Point) original).getX());
+				((Point) oldState).setY(((Point) original).getY());
+				oldState.setColor(original.getColor());
+				oldState.setSelected(original.isSelected());
 
 
-				((Tacka) original).setX(((Tacka) newState).getX());
-				((Tacka) original).setY(((Tacka) newState).getY());
-				original.setBoja(newState.getBoja());
-				original.setSelektovan(newState.isSelektovan());
+				((Point) original).setX(((Point) newState).getX());
+				((Point) original).setY(((Point) newState).getY());
+				original.setColor(newState.getColor());
+				
+				original.setSelected(newState.isSelected());
 				
 			
 
@@ -52,40 +53,41 @@ public class CmdUpdateShape implements Command {
 			}
 
 
-		} else if(original instanceof Linija) {
+		} else if(original instanceof Line) {
 
-			oldState = new Linija();
+			oldState = new Line();
 
-			((Linija) oldState).settPocetna(((Linija) original).gettPocetna());
-			((Linija) oldState).settKrajnja(((Linija) original).gettKrajnja());
-			oldState.setBoja(original.getBoja());
-			oldState.setSelektovan(original.isSelektovan());
-
-
-			((Linija) original).settPocetna(((Linija) newState).gettPocetna());
-			((Linija) original).settKrajnja(((Linija) newState).gettKrajnja());
-
-			original.setBoja(newState.getBoja());
-			original.setSelektovan(newState.isSelektovan());
+			((Line) oldState).setpStart(((Line) original).getpStart());
+			((Line) oldState).setpEnd(((Line) original).getpEnd());
+			oldState.setColor(original.getColor());
+			oldState.setSelected(original.isSelected());
 
 
-		}else if(original instanceof Krug) {
+			((Line) original).setpStart(((Line) newState).getpStart());
+			((Line) original).setpEnd(((Line) newState).getpEnd());
 
-			oldState=new Krug();
+			original.setColor(newState.getColor());
+			original.setSelected(newState.isSelected());
+
+
+		}else if(original instanceof Circle) {
+
+			oldState=new Circle();
 
 			
 			try {
-				((Krug) oldState).setCentar(((Krug) original).getCentar());
-				((Krug) oldState).setR(((Krug) original).getR());
-				oldState.setBoja(original.getBoja());
-				((Krug) oldState).setBojaUnutrasnjosti(((Krug) original).getBojaUnutrasnjosti());
-				oldState.setSelektovan(original.isSelektovan());
+				((Circle) oldState).setCentar(((Circle) original).getCentar());
+				((Circle) oldState).setR(((Circle) original).getR());
+				oldState.setColor(original.getColor());
+				((Circle) oldState).setColorInside(((Circle) original).getColorInside());
+				oldState.setSelected(original.isSelected());
 
-				((Krug) original).setCentar(((Krug) newState).getCentar());
-				((Krug) original).setR(((Krug) newState).getR());
-				original.setBoja(newState.getBoja());
-				((Krug) original).setBojaUnutrasnjosti(((Krug) newState).getBojaUnutrasnjosti());
-				original.setSelektovan(newState.isSelektovan());
+				((Circle) original).setCentar(((Circle) newState).getCentar());
+				((Circle) original).setR(((Circle) newState).getR());
+				original.setColor(newState.getColor());
+				((Circle) original).setColorInside(((Circle) newState).getColorInside());
+				System.out.println("SELEKTOVAN SAM I IDE NA PROMENU");
+				original.setSelected(newState.isSelected());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -93,25 +95,25 @@ public class CmdUpdateShape implements Command {
 			
 
 
-		} else if(original instanceof Pravougaonik) {
+		} else if(original instanceof Rectangle) {
 
-			oldState = new Pravougaonik();
+			oldState = new Rectangle();
 
 			try {
 
-				((Pravougaonik) oldState).setGoreLevo(((Pravougaonik) original).getGoreLevo());
-				((Pravougaonik) oldState).setSirina(((Pravougaonik) original).getSirina());
-				((Pravougaonik) oldState).setDuzinaStranice(((Pravougaonik) original).getDuzinaStranice());
-				((Pravougaonik) oldState).setBoja(original.getBoja());
-				((Pravougaonik) oldState).setBojaUnutrasnjosti(((Pravougaonik) original).getBojaUnutrasnjosti());
-				oldState.setSelektovan(original.isSelektovan());
+				((Rectangle) oldState).setUpLeft(((Rectangle) original).getUpLeft());
+				((Rectangle) oldState).setSirina(((Rectangle) original).getSirina());
+				((Rectangle) oldState).setEdgeLength(((Rectangle) original).getEdgeLength());
+				((Rectangle) oldState).setColor(original.getColor());
+				((Rectangle) oldState).setColorInside(((Rectangle) original).getColorInside());
+				oldState.setSelected(original.isSelected());
 
-				((Pravougaonik) original).setGoreLevo(((Pravougaonik) newState).getGoreLevo());
-				((Pravougaonik) original).setSirina(((Pravougaonik) newState).getSirina());
-				((Pravougaonik) original).setDuzinaStranice(((Pravougaonik) newState).getDuzinaStranice());
-				((Pravougaonik) original).setBoja(newState.getBoja());
-				((Pravougaonik) original).setBojaUnutrasnjosti(((Pravougaonik) newState).getBojaUnutrasnjosti());
-				original.setSelektovan(newState.isSelektovan());
+				((Rectangle) original).setUpLeft(((Rectangle) newState).getUpLeft());
+				((Rectangle) original).setSirina(((Rectangle) newState).getSirina());
+				((Rectangle) original).setEdgeLength(((Rectangle) newState).getEdgeLength());
+				((Rectangle) original).setColor(newState.getColor());
+				((Rectangle) original).setColorInside(((Rectangle) newState).getColorInside());
+				original.setSelected(newState.isSelected());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -119,25 +121,25 @@ public class CmdUpdateShape implements Command {
 			
 
 
-		}  else if(original instanceof Kvadrat) {
+		}  else if(original instanceof Square) {
 
-			oldState = new Kvadrat();
+			oldState = new Square();
 
 
 
 		
 			try {
-				((Kvadrat) oldState).setGoreLevo(((Kvadrat) original).getGoreLevo());
-				((Kvadrat) oldState).setDuzinaStranice(((Kvadrat) original).getDuzinaStranice());
-				((Kvadrat) oldState).setBoja(original.getBoja());
-				((Kvadrat) oldState).setBojaUnutrasnjosti(((Kvadrat) original).getBojaUnutrasnjosti());
-				oldState.setSelektovan(original.isSelektovan());
+				((Square) oldState).setUpLeft(((Square) original).getUpLeft());
+				((Square) oldState).setEdgeLength(((Square) original).getEdgeLength());
+				((Square) oldState).setColor(original.getColor());
+				((Square) oldState).setColorInside(((Square) original).getColorInside());
+				oldState.setSelected(original.isSelected());
 
-				((Kvadrat) original).setGoreLevo(((Kvadrat) newState).getGoreLevo());
-				((Kvadrat) original).setDuzinaStranice(((Kvadrat) newState).getDuzinaStranice());
-				((Kvadrat) original).setBoja(newState.getBoja());
-				((Kvadrat) original).setBojaUnutrasnjosti(((Kvadrat) newState).getBojaUnutrasnjosti());
-				original.setSelektovan(newState.isSelektovan());
+				((Square) original).setUpLeft(((Square) newState).getUpLeft());
+				((Square) original).setEdgeLength(((Square) newState).getEdgeLength());
+				((Square) original).setColor(newState.getColor());
+				((Square) original).setColorInside(((Square) newState).getColorInside());
+				original.setSelected(newState.isSelected());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -149,14 +151,14 @@ public class CmdUpdateShape implements Command {
 		}else if(original instanceof HexagonAdapter) {
 
 			oldState=new HexagonAdapter();
-			System.out.println(oldState);
+			System.out.println(oldState.toString());
 			
 			((HexagonAdapter) oldState).getHexagon().setX(((HexagonAdapter) original).getHexagon().getX());
 			((HexagonAdapter) oldState).getHexagon().setY(((HexagonAdapter) original).getHexagon().getY());
 			((HexagonAdapter) oldState).getHexagon().setR(((HexagonAdapter) original).getHexagon().getR());
 			((HexagonAdapter) oldState).getHexagon().setBorderColor(((HexagonAdapter) original).getHexagon().getBorderColor());
 			((HexagonAdapter) oldState).getHexagon().setAreaColor(((HexagonAdapter) original).getHexagon().getAreaColor());
-			((HexagonAdapter) oldState).setSelektovan(original.isSelektovan());
+			((HexagonAdapter) oldState).setSelected(original.isSelected());
 
 			
 			((HexagonAdapter) original).getHexagon().setX(((HexagonAdapter) newState).getHexagon().getX());
@@ -164,7 +166,7 @@ public class CmdUpdateShape implements Command {
 			((HexagonAdapter) original).getHexagon().setR(((HexagonAdapter) newState).getHexagon().getR());
 			((HexagonAdapter) original).getHexagon().setBorderColor(((HexagonAdapter) newState).getHexagon().getBorderColor());
 			((HexagonAdapter) original).getHexagon().setAreaColor(((HexagonAdapter) newState).getHexagon().getAreaColor());
-			((HexagonAdapter) original).setSelektovan(newState.isSelektovan());
+			((HexagonAdapter) original).setSelected(newState.isSelected());
 
 
 
