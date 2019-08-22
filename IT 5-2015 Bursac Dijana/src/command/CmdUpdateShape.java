@@ -1,12 +1,12 @@
 package command;
 
-import geometrija.HexagonAdapter;
-import geometrija.Circle;
-import geometrija.Square;
-import geometrija.Line;
-import geometrija.Shape;
-import geometrija.Rectangle;
-import geometrija.Point;
+import geometry.Circle;
+import geometry.HexagonAdapter;
+import geometry.Line;
+import geometry.Point;
+import geometry.Rectangle;
+import geometry.Shape;
+import geometry.Square;
 import mvc.DrawingModel;
 
 public class CmdUpdateShape implements Command {
@@ -151,7 +151,7 @@ public class CmdUpdateShape implements Command {
 		}else if(original instanceof HexagonAdapter) {
 
 			oldState=new HexagonAdapter();
-			System.out.println(oldState.toString());
+			//System.out.println(oldState.toString());
 			
 			((HexagonAdapter) oldState).getHexagon().setX(((HexagonAdapter) original).getHexagon().getX());
 			((HexagonAdapter) oldState).getHexagon().setY(((HexagonAdapter) original).getHexagon().getY());

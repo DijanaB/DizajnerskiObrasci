@@ -1,8 +1,9 @@
-package geometrija;
+package geometry;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
+import geometry.HexagonAdapter;
 import hexagon.Hexagon;
 
 public class HexagonAdapter extends SurfaceShape  {
@@ -19,6 +20,11 @@ public class HexagonAdapter extends SurfaceShape  {
 	}
 	
 	public HexagonAdapter() {
+		
+	}
+	
+	public HexagonAdapter(Hexagon hexagon) {
+		this.hexagon = hexagon;
 		
 	}
 	
@@ -61,9 +67,13 @@ public class HexagonAdapter extends SurfaceShape  {
 	@Override
 	public void selected(Graphics g) {
 	
-		g.setColor(Color.BLUE);
+		/*g.setColor(Color.BLUE);
 		hexagon.setSelected(true);
-		super.setSelected(true);	
+		super.setSelected(true);	*/
+		if(isSelected())
+			hexagon.setSelected(true);
+		else
+			hexagon.setSelected(false);
 		
 		
 		
@@ -78,6 +88,43 @@ public class HexagonAdapter extends SurfaceShape  {
 		return hexagon.doesContain(x, y);
 	}
 
-	
+	public HexagonAdapter clone() {
+		Hexagon hexagon = new Hexagon(getXCoordinate(), getYCoordinate(), getR());
+		hexagon.setBorderColor(getEdgeColor());
+		hexagon.setAreaColor(getAreaColor());
+		return new HexagonAdapter(hexagon);
+	}
+
+	public int getR() {
+		return hexagon.getR();
+	}
+
+	public void setR(int r) {
+		hexagon.setR(r);
+	}
+
+	public int getXCoordinate() {
+		return hexagon.getX();
+	}
+
+	public int getYCoordinate() {
+		return hexagon.getY();
+	}
+
+	public Color getEdgeColor() {
+		return hexagon.getBorderColor();
+	}
+
+	public void setEdgeColor(Color color) {
+		hexagon.setBorderColor(color);
+	}
+
+	public Color getAreaColor() {
+		return hexagon.getAreaColor();
+	}
+
+	public void setAreaColor(Color color) {
+		hexagon.setAreaColor(color);
+	}
 
 }

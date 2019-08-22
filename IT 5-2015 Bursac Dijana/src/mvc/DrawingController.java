@@ -7,14 +7,15 @@ import javax.swing.JOptionPane;
 
 import command.CmdAddShape;
 import command.CmdRemoveShape;
+import command.CmdUpdateHexagon;
 import command.CmdUpdateShape;
-import geometrija.HexagonAdapter;
-import geometrija.Circle;
-import geometrija.Square;
-import geometrija.Line;
-import geometrija.Shape;
-import geometrija.Rectangle;
-import geometrija.Point;
+import geometry.Circle;
+import geometry.HexagonAdapter;
+import geometry.Line;
+import geometry.Point;
+import geometry.Rectangle;
+import geometry.Shape;
+import geometry.Square;
 import hexagon.Hexagon;
 
 public class DrawingController {
@@ -29,6 +30,7 @@ public class DrawingController {
 	private CmdAddShape cmdAddShape ;
 	private CmdRemoveShape cmdRemoveShape;
 	private  CmdUpdateShape cmdUpdateShape;
+	private CmdUpdateHexagon cmdUpdateHexagon;
 	
 	
 	public DrawingController (DrawingModel model, Frame frame) {
@@ -327,10 +329,20 @@ public class DrawingController {
 					
 					model.getStackShapesUndo().add(s);
 					
-					cmdUpdateShape = new CmdUpdateShape(s, model.getStackShapesUndo().get(i));
+					if(selected instanceof HexagonAdapter)
+					{
+						cmdUpdateHexagon = new CmdUpdateHexagon(s, model.getStackShapesUndo().get(i));
+						
+					}else
+					{
+						
+						cmdUpdateShape = new CmdUpdateShape(s, model.getStackShapesUndo().get(i));
+						
+						cmdUpdateShape.execute();
+						
+					}
 					
-					cmdUpdateShape.execute();
-					
+			
 					setPnlModification();
 					m++;
 				

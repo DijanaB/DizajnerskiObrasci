@@ -1,4 +1,4 @@
-package geometrija;
+package geometry;
 
 import java.awt.Color;
 import java.awt.Graphics;

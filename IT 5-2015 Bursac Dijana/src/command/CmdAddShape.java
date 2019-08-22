@@ -1,6 +1,6 @@
 package command;
 
-import geometrija.Shape;
+import geometry.Shape;
 import mvc.DrawingModel;
 
 public class CmdAddShape implements Command {

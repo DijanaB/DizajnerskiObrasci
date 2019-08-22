@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 import javax.swing.JPanel;
 
-import geometrija.Shape;
+import geometry.Shape;
 
 public class DrawingView extends JPanel {
  

@@ -3,7 +3,7 @@ package mvc;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import geometrija.Shape;
+import geometry.Shape;
 
 public class DrawingModel {
 
